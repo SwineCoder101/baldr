@@ -1,7 +1,21 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATH } from "../../common/const";
-import { Wrapper, GameSelection, GameLabel, GameSelect, TabNavigation, TabButton } from "./style";
+import {
+  Wrapper,
+  GameSelection,
+  GameLabel,
+  GameSelect,
+  TabNavigation,
+  TabButton,
+  TradeListView,
+  SendTradeView,
+  SectionHeader,
+  SectionTitle,
+  CountBadge,
+  ExpandIcon,
+  BlueCountBadge,
+} from "./style";
 import LogoTopBar from "../../components/LogoTopBar";
 import BottomNavBar from "../../components/BottomNavBar";
 
@@ -40,6 +54,8 @@ const escrowRequests = [
 const EscrowListPage = () => {
   const navigate = useNavigate();
   const [selectedGame, setSelectedGame] = useState("Maple Story");
+  const [doneOpen, setDoneOpen] = useState(false);
+  const [processingOpen, setProcessingOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("received");
 
   useEffect(() => {
@@ -48,6 +64,14 @@ const EscrowListPage = () => {
 
   const handleGameChange = (event) => {
     setSelectedGame(event.target.value);
+  };
+
+  const handleToggleDone = () => {
+    setDoneOpen(!doneOpen);
+  };
+
+  const handleToggleProcessing = () => {
+    setProcessingOpen(!processingOpen);
   };
 
   const handleTabChange = (tab) => {
@@ -78,6 +102,38 @@ const EscrowListPage = () => {
             Send Trade
           </TabButton>
         </TabNavigation>
+
+        {/* Trade List View Section */}
+        {activeTab === "received" && (
+          <TradeListView>
+            {/* Done Dropdown */}
+            <SectionHeader onClick={handleToggleDone} className="">
+              <div className="f-row vc">
+                <SectionTitle>Done</SectionTitle>
+                <CountBadge>
+                  {escrowRequests.filter((req) => req.status === "Done").length}
+                </CountBadge>
+              </div>
+              <ExpandIcon open={doneOpen} className="f-row vc hc" />
+            </SectionHeader>
+
+            {/* Processing Dropdown */}
+            <SectionHeader onClick={handleToggleProcessing}>
+              <div className="f-row vc">
+                <SectionTitle>Processing</SectionTitle>
+                <BlueCountBadge>
+                  {escrowRequests.filter((req) => req.status === "Processing").length}
+                </BlueCountBadge>
+              </div>
+              <ExpandIcon open={processingOpen} />
+            </SectionHeader>
+          </TradeListView>
+        )}
+        {activeTab === "send" && (
+          <SendTradeView>
+            <p>Send Trade Section (To be implemented)</p>
+          </SendTradeView>
+        )}
       </Wrapper>
 
       <BottomNavBar />
