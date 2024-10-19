@@ -1,15 +1,20 @@
 /* eslint-disable no-unused-vars */
 import { Wrapper } from "./style";
 import { useEffect } from "react";
-import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { useLoaderData, useLocation, useNavigate, useParams } from "react-router-dom";
 import LogoTopBar from "../../components/LogoTopBar";
 import BottomNavBar from "../../components/BottomNavBar";
 import SellerView from "./SellerView";
 import BuyerView from "./BuyerView";
+import { MY_WALLET_ADDRESS } from "../../common/const";
 
 const EscrowTradePage = () => {
   const data = useParams();
-  const { escrowCount, sellerAddress, buyerAddress, escrowUUID } = data;
+  const { escrowCount, sellerAddress, buyerAddress } = data;
+  console.log(data);
+
+  const location = useLocation();
+  const userInfo = { ...location.state };
 
   // destructure the data object
   // myaddress
@@ -18,9 +23,9 @@ const EscrowTradePage = () => {
   // nftid
   // amount
   // status
-  const myaddress = "0xfa6Cc5134a2e81a2F19113992Ef61F9BE81cafdE";
-  const isSeller = sellerAddress === myaddress;
-  const isBuyer = buyerAddress === myaddress;
+
+  const isSeller = sellerAddress === MY_WALLET_ADDRESS;
+  const isBuyer = buyerAddress === MY_WALLET_ADDRESS;
   console.log(isSeller, isBuyer);
 
   useEffect(() => {
