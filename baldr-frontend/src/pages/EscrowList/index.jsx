@@ -14,6 +14,9 @@ import {
   SectionTitle,
   CountBadge,
   ExpandIcon,
+  CollapseWrapper,
+  TradeCard,
+  TradeCardContent,
   BlueCountBadge,
 } from "./style";
 import LogoTopBar from "../../components/LogoTopBar";
@@ -116,6 +119,24 @@ const EscrowListPage = () => {
               </div>
               <ExpandIcon open={doneOpen} className="f-row vc hc" />
             </SectionHeader>
+            <CollapseWrapper open={doneOpen}>
+              {escrowRequests
+                .filter((request) => request.status === "Done")
+                .map((request) => (
+                  <TradeCard key={request.uuid}>
+                    <TradeCardContent>
+                      <div className="f-row f-spb">
+                        <p>{request.sender}</p>
+                        <p className="date">{request.date}</p>
+                      </div>
+                      <div className="f-row f-spb" style={{ marginTop: "1rem" }}>
+                        <p>{request.item}</p>
+                        <p>{request.price} Gold</p>
+                      </div>
+                    </TradeCardContent>
+                  </TradeCard>
+                ))}
+            </CollapseWrapper>
 
             {/* Processing Dropdown */}
             <SectionHeader onClick={handleToggleProcessing}>
@@ -127,6 +148,24 @@ const EscrowListPage = () => {
               </div>
               <ExpandIcon open={processingOpen} />
             </SectionHeader>
+            <CollapseWrapper open={processingOpen}>
+              {escrowRequests
+                .filter((request) => request.status === "Processing")
+                .map((request) => (
+                  <TradeCard key={request.uuid}>
+                    <TradeCardContent>
+                      <div className="f-row f-spb">
+                        <p>{request.sender}</p>
+                        <p className="date">{request.date}</p>
+                      </div>
+                      <div className="f-row f-spb" style={{ marginTop: "1rem" }}>
+                        <p>{request.item}</p>
+                        <p>{request.price} Gold</p>
+                      </div>
+                    </TradeCardContent>
+                  </TradeCard>
+                ))}
+            </CollapseWrapper>
           </TradeListView>
         )}
         {activeTab === "send" && (
