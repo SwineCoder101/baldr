@@ -19,6 +19,8 @@ import Item3 from "../../assets/image/item3.png";
 import Item4 from "../../assets/image/item4.png";
 import Item5 from "../../assets/image/item5.png";
 import Item6 from "../../assets/image/item6.png";
+import { useNavigate } from "react-router-dom";
+import { ROUTE_PATH } from "../../common/const";
 
 const items = [
   { name: "Item1", image: Item1 },
@@ -30,6 +32,8 @@ const items = [
 ];
 
 const InventoryPage = () => {
+  const navigate = useNavigate();
+
   const [selectedGame, setSelectedGame] = useState("Maple Story");
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -43,7 +47,7 @@ const InventoryPage = () => {
 
   const handleMenuItemClick = (action) => {
     if (action === "Escrow") {
-      console.log("Escrow selected");
+      navigate(ROUTE_PATH.ESCROW_CREATE);
     }
   };
 
