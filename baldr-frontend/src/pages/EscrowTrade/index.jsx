@@ -11,10 +11,11 @@ import { MY_WALLET_ADDRESS } from "../../common/const";
 const EscrowTradePage = () => {
   const data = useParams();
   const { escrowCount, sellerAddress, buyerAddress } = data;
-  console.log(data);
+  // console.log(data);
 
   const location = useLocation();
   const userInfo = { ...location.state };
+  // console.log(userInfo.request);
 
   // destructure the data object
   // myaddress
@@ -26,14 +27,11 @@ const EscrowTradePage = () => {
 
   const isSeller = sellerAddress === MY_WALLET_ADDRESS;
   const isBuyer = buyerAddress === MY_WALLET_ADDRESS;
-  console.log(isSeller, isBuyer);
+  // console.log(isSeller, isBuyer);
 
   useEffect(() => {
-    // if (!isSeller && !isBuyer) {
-    //     navigate('/error')
-    // }
-    // navigate('/error')
     if (!isSeller && !isBuyer) {
+      // TODO: route back for demo video
       console.log("you are not the seller or the buyer");
       throw new Error("you are not the seller or the buyer");
     }
@@ -49,8 +47,20 @@ const EscrowTradePage = () => {
       <LogoTopBar />
 
       <Wrapper>
-        <div> {isSeller && <SellerView data={data} />} </div>
-        <div> {isBuyer && <BuyerView data={data} />} </div>
+        {isSeller && (
+          <SellerView
+            sellerAddress={sellerAddress}
+            buyerAddress={buyerAddress}
+            tradeData={userInfo}
+          />
+        )}
+        {isBuyer && (
+          <BuyerView
+            sellerAddress={sellerAddress}
+            buyerAddress={buyerAddress}
+            tradeData={userInfo}
+          />
+        )}
       </Wrapper>
 
       <BottomNavBar />
