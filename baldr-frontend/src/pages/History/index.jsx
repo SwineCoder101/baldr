@@ -7,7 +7,7 @@ const HistoryPage = () => {
     <>
       <LogoTopBar />
 
-      <Wrapper>HistoryPage</Wrapper>
+      <Wrapper>HistoryPage (WIP)</Wrapper>
 
       <BottomNavBar />
     </>
