@@ -104,6 +104,29 @@ export const ExpandIcon = styled.div`
   background-repeat: no-repeat;
 `;
 
+export const CollapseWrapper = styled.div`
+  display: ${({ open }) => (open ? "block" : "none")};
+`;
+
+export const TradeCard = styled.div`
+  background-color: ${theme.color.BACK_BLACK};
+  color: ${theme.color.WHITE};
+  margin-bottom: 1rem;
+  padding: 1.4rem;
+  border-radius: 8px;
+`;
+
+export const TradeCardContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: ${theme.font.SIZE.M};
+
+  .date {
+    color: ${theme.color.TEXT_GRAY};
+    font-size: ${theme.font.SIZE.S};
+  }
+`;
+
 export const TradeInfo = styled.p`
   color: ${theme.color.TEXT_LIGHT_GRAY};
   margin: 4px 0;
