@@ -61,7 +61,7 @@ contract Escrow is ReentrancyGuard, Ownable, ERC1155Holder {
     mapping(uint256 => Trade) public trades;
 
     // Events
-    event ConfirmationEvent(uint256 tradeId, TradeStatus tradeStatus, uint256 completedTimestamp);
+    event ConfirmationEvent(Trade trade);
     event TradeCreated(uint256 tradeId, address indexed seller, address indexed buyer, uint256 timestamp);
     event DepositEvent(uint256 tradeId, address userAddress, User user, UserStatus userStatus);
     event WithdrawEvent(uint256 tradeId, address userAddress, User user);
@@ -199,7 +199,7 @@ contract Escrow is ReentrancyGuard, Ownable, ERC1155Holder {
             trade.status = TradeStatus.COMPLETE;
             trade.completedTimestamp = block.timestamp;
 
-            emit ConfirmationEvent(tradeId, trade.status, trade.completedTimestamp);
+            emit ConfirmationEvent(trade);
         }
     }
 
