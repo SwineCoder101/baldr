@@ -146,12 +146,12 @@ contract Escrow is ReentrancyGuard, Ownable, ERC1155Holder {
         Trade storage trade = trades[tradeId];
         require(trade.status != TradeStatus.COMPLETE, "Trade already completed");
 
-        // 확인: 판매자가 토큰을 입금했는지 확인
+        // Check if seller has deposited tokens
         if (msg.sender == trade.seller.userAddress) {
             require(trade.seller.userStatus == UserStatus.DEPOSITED, "Seller must deposit tokens first");
             _confirmSeller(trade);
         }
-        // 확인: 구매자가 이더리움을 입금했는지 확인
+        // Check if buyer has deposited Ether
         else if (msg.sender == trade.buyer.userAddress) {
             require(trade.buyer.userStatus == UserStatus.DEPOSITED, "Buyer must deposit ETH first");
             _confirmBuyer(trade);
@@ -159,32 +159,29 @@ contract Escrow is ReentrancyGuard, Ownable, ERC1155Holder {
             revert("Unauthorized access");
         }
 
-        // 최종 거래를 완료할 수 있는지 여부를 확인
+        // Finalize trade if both parties have confirmed
         _finalizeTradeIfConfirmed(tradeId);
     }
 
-    // 내부적으로 구매자가 이더리움을 입금했는지 확인하는 함수
     function _confirmBuyer(Trade storage trade) internal {
         require(trade.buyer.depositBalance > 0, "Buyer has not deposited ETH");
         trade.buyer.userStatus = UserStatus.CONFIRMED;
     }
 
-    // 내부적으로 판매자가 토큰을 입금했는지 확인하는 함수
     function _confirmSeller(Trade storage trade) internal {
-        // Escrow 컨트랙트의 토큰 잔고 확인
         uint256 escrowBalance = tokenAddress.balanceOf(address(this), trade.tokenDetails[0].tokenId);
         require(escrowBalance >= trade.tokenDetails[0].amount, "Insufficient token balance in Escrow");
 
         trade.seller.userStatus = UserStatus.CONFIRMED;
     }
 
-    // 두 사용자 모두가 거래를 확인한 경우 거래를 완료하는 함수
+    // Function to finalize the trade if both the buyer and seller have confirmed
     function _finalizeTradeIfConfirmed(uint256 tradeId) internal {
         Trade storage trade = trades[tradeId];
 
-        // 구매자와 판매자가 모두 거래를 확인한 경우
+        // If both buyer and seller have confirmed the trade
         if (trade.seller.userStatus == UserStatus.CONFIRMED && trade.buyer.userStatus == UserStatus.CONFIRMED) {
-            // 판매자로부터 구매자에게 토큰 전송
+            // Transfer tokens from seller to buyer
             for (uint256 i = 0; i < trade.tokenDetails.length; i++) {
                 tokenAddress.safeTransferFrom(
                     address(this),
@@ -195,7 +192,7 @@ contract Escrow is ReentrancyGuard, Ownable, ERC1155Holder {
                 );
             }
 
-            // 구매자가 입금한 ETH를 판매자에게 전송
+            // Transfer ETH from buyer to seller
             (bool success,) = payable(trade.seller.userAddress).call{value: trade.buyer.depositBalance}("");
             require(success, "ETH Transfer failed");
 
@@ -213,5 +210,5 @@ contract Escrow is ReentrancyGuard, Ownable, ERC1155Holder {
     function getTradeDetails(uint256 tradeId) external view tradeExists(tradeId) returns (Trade memory) {
         return trades[tradeId];
     }
-
 }
+
