@@ -10,7 +10,7 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
     uint256 public tradeCounter;
 
     constructor(address initialOwner)
-        ERC1155("https://sapphire-preferred-bison-599.mypinata.cloud/ipfs/QmeuvRfgqwxUt7NqackekJX1R7pFrP9NAYFiqv7T1AAhgx/")
+        ERC1155("https://sapphire-preferred-bison-599.mypinata.cloud/ipfs/QmWUcknL6WgU1uEozHBYFnxSqVFTangUb1fNHYj5Gc8aEk/")
         Ownable(initialOwner)
     {}
 
@@ -19,23 +19,30 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
         User user;
         address userAddress;
         TokenDetails[] tokenDetails;
-        bool userConfirmed;
         uint256 depositBalance;
+        UserStatus userStatus;
     }
 
     struct Trade {
         uint256 tradeId;
         Side buyer;
         Side seller;
-        Status status;
+        TradeStatus status;
         uint256 requestTimestamp;
         uint256 completedTimestamp;
     }
 
-    enum Status {
-      REQUESTED,
-      IN_PROGRESS,
-      COMPLETE
+    enum TradeStatus {
+        REQUESTED,
+        IN_PROGRESS,
+        COMPLETE
+    }
+
+    enum UserStatus {
+        REQUESTED,
+        CONFIRMED,
+        DEPOSITED,
+        WITHDRAWN
     }
 
     struct TokenDetails {
@@ -45,9 +52,10 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
     }
 
     struct UserInteraction {
-      uint256 tradeId;
-      Side side;
-      Status status;
+        uint256 tradeId;
+        Side side;
+        TradeStatus tradeStatus;
+        UserStatus userStatus;
     }
 
     enum User {
@@ -59,18 +67,11 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
     mapping(uint256 => Trade) public trades;
 
     // Events
-    event ConfirmationEvent(
-      Trade trade
-    );
+    event ConfirmationEvent(Trade trade);
 
-    event DepositEvent(
-      UserInteraction userInteraction,
-      bool isUpdate
-    );
+    event DepositEvent(UserInteraction userInteraction, bool isUpdate);
 
-    event WithdrawEvent(
-      UserInteraction userInteraction
-    );
+    event WithdrawEvent(UserInteraction userInteraction);
 
     // Modifier to check trade existence
     modifier tradeExists(uint256 tradeId) {
@@ -82,7 +83,7 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
     function deposit(
         uint256[] memory tokenIds,
         uint256[] memory amounts,
-        address tokenAddress, 
+        address tokenAddress,
         User user
     ) public payable {
         require(tokenIds.length == amounts.length, "Token IDs and amounts must have the same length");
@@ -103,7 +104,8 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
             emit DepositEvent(UserInteraction({
                 tradeId: tradeCounter,
                 side: trades[tradeCounter].seller,
-                status: trades[tradeCounter].status
+                tradeStatus: trades[tradeCounter].status,
+                userStatus: trades[tradeCounter].seller.userStatus
             }), false);
 
         } else if (user == User.Buyer) {
@@ -120,18 +122,18 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
             emit DepositEvent(UserInteraction({
                 tradeId: tradeCounter,
                 side: trades[tradeCounter].buyer,
-                status: trades[tradeCounter].status
+                tradeStatus: trades[tradeCounter].status,
+                userStatus: trades[tradeCounter].buyer.userStatus
             }), false);
         } else {
             revert("Invalid user type");
         }
     }
 
-
     // Create a new trade
     function createTrade(
-        address buyerAddress, 
-        address tokenAddress, 
+        address buyerAddress,
+        address tokenAddress,
         TokenDetails[] memory tokenDetails
     )
         external
@@ -159,7 +161,7 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
         newTrade.buyer.userAddress = buyerAddress;
         newTrade.seller.user = User.Seller;
         newTrade.seller.userAddress = msg.sender;
-        newTrade.status = Status.REQUESTED;
+        newTrade.status = TradeStatus.REQUESTED;
         newTrade.requestTimestamp = block.timestamp;
         newTrade.completedTimestamp = 0;
 
@@ -168,14 +170,12 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
             newTrade.buyer.tokenDetails.push(tokenDetails[i]);
             newTrade.seller.tokenDetails.push(tokenDetails[i]);
         }
-
-        emit ConfirmationEvent(newTrade);
     }
 
     // Confirm trade (either buyer or seller)
     function confirmTrade(uint256 tradeId) external payable tradeExists(tradeId) nonReentrant {
         Trade storage trade = trades[tradeId];
-        require(trade.status != Status.COMPLETE, "Trade already completed");
+        require(trade.status != TradeStatus.COMPLETE, "Trade already completed");
 
         if (msg.sender == trade.seller.userAddress) {
             _confirmSeller(trade);
@@ -197,8 +197,8 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
 
     // Confirm seller participation in the trade
     function _confirmSeller(Trade storage trade) internal {
-        require(!trade.seller.userConfirmed, "Seller already confirmed");
-        trade.seller.userConfirmed = true;
+        require(trade.seller.userStatus != UserStatus.CONFIRMED, "Seller already confirmed");
+        trade.seller.userStatus = UserStatus.CONFIRMED;
     }
 
     // Confirm buyer participation and deposit ETH
@@ -208,13 +208,14 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
             totalPrice += trade.buyer.tokenDetails[i].price;
         }
         require(msg.value == totalPrice, "Incorrect ETH amount");
-        require(!trade.buyer.userConfirmed, "Buyer already confirmed");
-        trade.buyer.userConfirmed = true;
+        require(trade.buyer.userStatus != UserStatus.CONFIRMED, "Buyer already confirmed");
+        trade.buyer.userStatus = UserStatus.CONFIRMED;
 
         UserInteraction memory userInteraction = UserInteraction({
             tradeId: trade.tradeId,
             side: trade.buyer,
-            status: trade.status
+            tradeStatus: trade.status,
+            userStatus: trade.buyer.userStatus
         });
         emit DepositEvent(userInteraction, false);
     }
@@ -223,7 +224,7 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
     function _finalizeTradeIfConfirmed(uint256 tradeId) internal {
         Trade storage trade = trades[tradeId];
 
-        if (trade.buyer.userConfirmed && trade.seller.userConfirmed) {
+        if (trade.buyer.userStatus == UserStatus.CONFIRMED && trade.seller.userStatus == UserStatus.CONFIRMED) {
             // Transfer NFTs to the buyer
             for (uint256 i = 0; i < trade.seller.tokenDetails.length; i++) {
                 IERC1155(trade.seller.userAddress).safeTransferFrom(
@@ -239,7 +240,7 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
             (bool success,) = payable(trade.seller.userAddress).call{value: msg.value}("");
             require(success, "ETH Transfer failed");
 
-            trade.status = Status.COMPLETE;
+            trade.status = TradeStatus.COMPLETE;
             trade.completedTimestamp = block.timestamp;
 
             emit ConfirmationEvent(trade);
@@ -260,5 +261,3 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
         _mintBatch(to, ids, amounts, data);
     }
 }
-
-
