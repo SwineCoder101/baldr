@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTE_PATH } from "../../common/const";
 import {
   Wrapper,
@@ -27,11 +27,11 @@ const escrowRequests = [
   {
     id: 1,
     uuid: "550e8400-e29b-41d4-a716-446655440000",
-    sender: "User123",
+    sender: "Louis",
     price: "$100",
     quantity: 1,
-    date: "2024-10-14",
-    item: "Sword of Power",
+    date: "14/10/2024 - 07:11pm",
+    item: "Happy Mushroom",
     contractAddress: "0x123...abc",
     walletAddress: "0xABC123...789",
     trustScore: 85, // Trust score out of 100
@@ -151,19 +151,24 @@ const EscrowListPage = () => {
             <CollapseWrapper open={processingOpen}>
               {escrowRequests
                 .filter((request) => request.status === "Processing")
-                .map((request) => (
-                  <TradeCard key={request.uuid}>
-                    <TradeCardContent>
-                      <div className="f-row f-spb">
-                        <p>{request.sender}</p>
-                        <p className="date">{request.date}</p>
-                      </div>
-                      <div className="f-row f-spb" style={{ marginTop: "1rem" }}>
-                        <p>{request.item}</p>
-                        <p>{request.price} Gold</p>
-                      </div>
-                    </TradeCardContent>
-                  </TradeCard>
+                .map((request, index) => (
+                  <Link
+                    key={index}
+                    to={`/escrow/99/0xaffABfbDa8fb29E34ffd60545eDFBA3207731008/0xfa6Cc5134a2e81a2F19113992Ef61F9BE81cafdE/bbb08400-e29b-41d4-a716-446655440666-3`}
+                  >
+                    <TradeCard key={request.uuid}>
+                      <TradeCardContent>
+                        <div className="f-row f-spb">
+                          <p>{request.sender}</p>
+                          <p className="date">{request.date}</p>
+                        </div>
+                        <div className="f-row f-spb" style={{ marginTop: "1rem" }}>
+                          <p>{request.item}</p>
+                          <p>{request.price}</p>
+                        </div>
+                      </TradeCardContent>
+                    </TradeCard>
+                  </Link>
                 ))}
             </CollapseWrapper>
           </TradeListView>
