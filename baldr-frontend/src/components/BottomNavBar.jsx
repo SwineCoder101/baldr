@@ -45,18 +45,18 @@ const Wrapper = styled.div`
   background-color: ${theme.color.BACK_BLACK};
   color: ${theme.color.WHITE};
   font-size: ${theme.font.SIZE.XL};
-  padding: 1.4rem 3rem;
+  padding: 1.4rem 3.4rem;
 
   position: fixed;
   bottom: 0;
   width: 100%;
 
   img {
-    width: 3rem;
+    width: 3.4rem;
   }
 
   p {
-    font-size: ${theme.font.SIZE.M};
+    font-size: ${theme.font.SIZE.S};
     margin-top: 0.4rem;
   }
 
