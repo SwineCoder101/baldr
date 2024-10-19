@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { MY_WALLET_ADDRESS, ROUTE_PATH } from "../../common/const";
 import {
   Wrapper,
@@ -67,7 +67,7 @@ const escrowRequests = [
     date: "10/10/2024 - 09:10am",
     item: "Hack Mac",
     contractAddress: "0x769ac1e37dd301e4ffadba4c440450a781a2e0d9",
-    walletAddress: "0xfa6Cc5134a2e81a2F19113992Ef61F9BE81cafdE",
+    walletAddress: MY_WALLET_ADDRESS,
     trustScore: 80, // Trust score out of 100
     status: "Done",
   },
@@ -156,7 +156,7 @@ const EscrowListPage = () => {
                     request.status === "Done" && request.walletAddress !== MY_WALLET_ADDRESS
                 )
                 .map((request) => (
-                  <TradeCard key={request.uuid}>
+                  <TradeCard key={request.uuid} onClick={() => handleTradeClick(request)}>
                     <TradeCardContent>
                       <div className="f-row f-spb">
                         <p>{request.sender}</p>
@@ -235,7 +235,7 @@ const EscrowListPage = () => {
                     request.status === "Done" && request.walletAddress === MY_WALLET_ADDRESS
                 )
                 .map((request) => (
-                  <TradeCard key={request.uuid}>
+                  <TradeCard key={request.uuid} onClick={() => handleTradeClick(request)}>
                     <TradeCardContent>
                       <div className="f-row f-spb">
                         <p>{request.sender}</p>
@@ -272,24 +272,19 @@ const EscrowListPage = () => {
                   (request) =>
                     request.status === "Processing" && request.walletAddress === MY_WALLET_ADDRESS
                 )
-                .map((request, index) => (
-                  <Link
-                    key={index}
-                    to={`/escrow/99/0xaffABfbDa8fb29E34ffd60545eDFBA3207731008/0xfa6Cc5134a2e81a2F19113992Ef61F9BE81cafdE/bbb08400-e29b-41d4-a716-446655440666-3`}
-                  >
-                    <TradeCard key={request.uuid}>
-                      <TradeCardContent>
-                        <div className="f-row f-spb">
-                          <p>{request.sender}</p>
-                          <p className="date">{request.date}</p>
-                        </div>
-                        <div className="f-row f-spb" style={{ marginTop: "1rem" }}>
-                          <p>{request.item}</p>
-                          <p>{request.price}</p>
-                        </div>
-                      </TradeCardContent>
-                    </TradeCard>
-                  </Link>
+                .map((request) => (
+                  <TradeCard key={request.uuid} onClick={() => handleTradeClick(request)}>
+                    <TradeCardContent>
+                      <div className="f-row f-spb">
+                        <p>{request.sender}</p>
+                        <p className="date">{request.date}</p>
+                      </div>
+                      <div className="f-row f-spb" style={{ marginTop: "1rem" }}>
+                        <p>{request.item}</p>
+                        <p>{request.price}</p>
+                      </div>
+                    </TradeCardContent>
+                  </TradeCard>
                 ))}
             </CollapseWrapper>
           </TradeListView>

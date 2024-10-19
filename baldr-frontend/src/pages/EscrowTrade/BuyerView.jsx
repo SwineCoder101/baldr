@@ -4,7 +4,7 @@ import BaldrGood from "../../assets/image/baldr-good.png";
 import TradeView from "../../assets/image/tmp-trade.png";
 import RefreshIcon from "../../assets/icons/refresh.png";
 
-const BuyerView = () => {
+const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
   return (
     <Wrapper className="f-col">
       {/* Select Game Section */}
