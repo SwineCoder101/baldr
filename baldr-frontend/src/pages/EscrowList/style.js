@@ -32,3 +32,24 @@ export const GameSelect = styled.select`
   background-repeat: no-repeat;
   background-position: right 10px center;
 `;
+
+export const TabNavigation = styled.div`
+  display: flex;
+  margin-bottom: 2rem;
+`;
+
+export const TabButton = styled.button`
+  padding: 1rem 1rem;
+  width: 50%;
+  font-size: ${theme.font.SIZE.M};
+  color: ${({ active }) => (active ? theme.color.WHITE : theme.color.TEXT_GRAY)};
+  border: none;
+  border-bottom: ${({ active }) => (active ? `2px solid ${theme.color.WHITE}` : "none")};
+  cursor: pointer;
+  outline: none;
+  transition: color 0.3s, background-color 0.3s;
+
+  &:hover {
+    color: ${theme.color.WHITE};
+  }
+`;
