@@ -2,6 +2,7 @@ import styled from "styled-components";
 import theme from "../../styles/theme";
 import BaldrGood from "../../assets/image/baldr-good.png";
 import TradeView from "../../assets/image/tmp-trade.png";
+import RefreshIcon from "../../assets/icons/refresh.png";
 
 const BuyerView = () => {
   return (
@@ -48,8 +49,11 @@ const BuyerView = () => {
       </div>
 
       <div id="trade-box">
-        <p>Trade</p>
-        <img src={TradeView} />
+        <div className="f-row f-spb vc">
+          <p id="title">Trade</p>
+          <img id="r-icon" src={RefreshIcon} />
+        </div>
+        <img id="t-img" src={TradeView} />
         <div id="dps-btn">Deposit Coin</div>
       </div>
 
@@ -63,16 +67,22 @@ const Wrapper = styled.div`
   background-color: ${theme.color.MAIN_BLACK};
   color: ${theme.color.WHITE};
   font-weight: 600;
-  height: 100vh;
-  gap: 1.4rem;
+  min-height: 100vh;
+  gap: 1.8rem;
+
+  #r-icon {
+    width: 3rem;
+    height: 3rem;
+  }
 
   #cfm-btn {
     background-color: ${theme.color.MAIN_BLUE};
     color: ${theme.color.WHITE};
     font-size: ${theme.font.SIZE.M};
-    padding: 0.8rem;
+    padding: 1rem;
     text-align: center;
     border-radius: 0.6rem;
+    margin-bottom: 8rem;
   }
 
   #trade-box {
@@ -83,8 +93,13 @@ const Wrapper = styled.div`
     font-size: ${theme.font.SIZE.M};
     gap: 1rem;
 
-    img {
+    #title {
+      font-size: ${theme.font.SIZE.ML};
+    }
+
+    #t-img {
       width: 100%;
+      margin: 1.4rem 0;
     }
 
     #dps-btn {
