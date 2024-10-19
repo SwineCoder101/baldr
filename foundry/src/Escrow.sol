@@ -1,12 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Escrow is ReentrancyGuard, IERC1155Receiver {
+contract Escrow is ReentrancyGuard, ERC1155, Ownable {
     uint256 public tradeCounter;
+
+    constructor(address initialOwner)
+        ERC1155("https://sapphire-preferred-bison-599.mypinata.cloud/ipfs/QmeuvRfgqwxUt7NqackekJX1R7pFrP9NAYFiqv7T1AAhgx/")
+        Ownable(initialOwner)
+    {}
 
     // Struct to define trade details
     struct Side {
@@ -240,28 +246,18 @@ contract Escrow is ReentrancyGuard, IERC1155Receiver {
         }
     }
 
-    // ========== IERC1155Receiver and IERC165 Functions ==========
-
-    function onERC1155Received(address, address, uint256, uint256, bytes memory)
+    function mint(address account, uint256 id, uint256 amount, bytes memory data)
         public
-        virtual
-        override
-        returns (bytes4)
+        onlyOwner
     {
-        return this.onERC1155Received.selector;
+        _mint(account, id, amount, data);
     }
 
-    function onERC1155BatchReceived(address, address, uint256[] memory, uint256[] memory, bytes memory)
+    function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data)
         public
-        virtual
-        override
-        returns (bytes4)
+        onlyOwner
     {
-        return this.onERC1155BatchReceived.selector;
-    }
-
-    function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
-        return interfaceId == type(IERC1155Receiver).interfaceId;
+        _mintBatch(to, ids, amounts, data);
     }
 }
 
