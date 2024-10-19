@@ -7,6 +7,7 @@ export const Wrapper = styled.div`
   font-size: ${theme.font.SIZE.ML};
   font-weight: 600;
   height: 100vh;
+  padding-top: 8rem;
 `;
 
 export const GameSelection = styled.div`

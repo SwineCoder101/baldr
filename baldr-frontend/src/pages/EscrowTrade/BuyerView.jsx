@@ -63,6 +63,7 @@ const BuyerView = () => {
 };
 
 const Wrapper = styled.div`
+  padding-top: 8rem !important;
   padding: 2rem;
   background-color: ${theme.color.MAIN_BLACK};
   color: ${theme.color.WHITE};
