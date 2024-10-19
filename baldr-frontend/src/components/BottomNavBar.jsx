@@ -45,19 +45,19 @@ const Wrapper = styled.div`
   background-color: ${theme.color.BACK_BLACK};
   color: ${theme.color.WHITE};
   font-size: ${theme.font.SIZE.XL};
-  padding: 1.4rem 3.4rem;
+  padding: 1rem 3.4rem;
 
   position: fixed;
   bottom: 0;
   width: 100%;
 
   img {
-    width: 3.4rem;
+    width: 3rem;
   }
 
   p {
     font-size: ${theme.font.SIZE.S};
-    margin-top: 0.4rem;
+    margin-top: 0.2rem;
   }
 
   .wh {
