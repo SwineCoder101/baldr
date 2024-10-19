@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import styled from "styled-components";
 import theme from "../../styles/theme";
@@ -5,8 +6,23 @@ import BaldrGood from "../../assets/image/baldr-good.png";
 import TradeView from "../../assets/image/tmp-trade.png";
 import RefreshIcon from "../../assets/icons/refresh.png";
 import { truncateText } from "../../common/commons";
+import { useEffect, useState } from "react";
 
 const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
+  const [repScore, setRepScore] = useState(0);
+  const [repComment, setRepComment] = useState(``);
+
+  useEffect(() => {
+    fetchAIData();
+  }, []);
+
+  function fetchAIData() {
+    setRepScore(70);
+    setRepComment(
+      `s of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular duri`
+    );
+  }
+
   return (
     <Wrapper className="f-col">
       {/* Select Game Section */}
@@ -51,13 +67,8 @@ const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
       <div id="rep-box" className="f-row">
         <img src={BaldrGood} />
         <div className="f-col">
-          <p id="title">Raputation Score: 65</p>
-          <p>
-            {truncateText(
-              `s of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular duri`,
-              70
-            )}
-          </p>
+          <p id="title">Reputation Score: {repScore}</p>
+          <p>{truncateText(repComment, 70)}</p>
         </div>
       </div>
 
