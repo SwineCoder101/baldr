@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import theme from "../../styles/theme";
+import BaldrGood from "../../assets/image/baldr-good.png";
+import TradeView from "../../assets/image/tmp-trade.png";
 
 const BuyerView = () => {
   return (
-    <Wrapper>
+    <Wrapper className="f-col">
       {/* Select Game Section */}
       <GameSelection className="f-row f-spb">
         <GameLabel>Game:</GameLabel>
@@ -37,11 +39,21 @@ const BuyerView = () => {
         </div>
       </div>
 
-      <div id="rep-box"></div>
+      <div id="rep-box" className="f-row">
+        <img src={BaldrGood} />
+        <div className="f-col">
+          <p id="title">Raputation Score: 65</p>
+          <p>He has just generated a wallet, and he has fewer than 5 transactions, ...</p>
+        </div>
+      </div>
 
-      <div id="trade-box"></div>
+      <div id="trade-box">
+        <p>Trade</p>
+        <img src={TradeView} />
+        <div id="dps-btn">Deposit Coin</div>
+      </div>
 
-      <div id="cfm-btn"></div>
+      <div id="cfm-btn">Confirm Trade</div>
     </Wrapper>
   );
 };
@@ -52,9 +64,60 @@ const Wrapper = styled.div`
   color: ${theme.color.WHITE};
   font-weight: 600;
   height: 100vh;
+  gap: 1.4rem;
+
+  #cfm-btn {
+    background-color: ${theme.color.MAIN_BLUE};
+    color: ${theme.color.WHITE};
+    font-size: ${theme.font.SIZE.M};
+    padding: 0.8rem;
+    text-align: center;
+    border-radius: 0.6rem;
+  }
+
+  #trade-box {
+    border-radius: 0.6rem;
+    padding: 1.2rem;
+    background-color: ${theme.color.BACK_BLACK};
+    color: ${theme.color.WHITE};
+    font-size: ${theme.font.SIZE.M};
+    gap: 1rem;
+
+    img {
+      width: 100%;
+    }
+
+    #dps-btn {
+      background-color: ${theme.color.BACK_BLUE};
+      color: ${theme.color.TEXT_BLUE};
+      padding: 0.8rem;
+      text-align: center;
+      border-radius: 0.6rem;
+    }
+  }
+
+  #rep-box {
+    border-radius: 0.6rem;
+    background-color: ${theme.color.BACK_PURPLE};
+    font-size: ${theme.font.SIZE.S};
+    color: ${theme.color.TEXT_GRAY};
+    padding: 1.4rem;
+
+    img {
+      width: 5rem;
+      height: 5rem;
+      border-radius: 1rem;
+      margin-right: 1rem;
+    }
+
+    #title {
+      color: ${theme.color.TEXT_PURPLE};
+      margin-bottom: 0.6rem;
+    }
+  }
 
   #info-box {
-    border-radius: 6px;
+    border-radius: 0.6rem;
     padding: 1.2rem;
     background-color: ${theme.color.BACK_BLACK};
     color: ${theme.color.WHITE};
@@ -71,7 +134,6 @@ const Wrapper = styled.div`
 const GameSelection = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 2rem;
 `;
 
 const GameLabel = styled.p`
