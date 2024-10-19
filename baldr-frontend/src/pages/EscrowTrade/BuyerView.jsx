@@ -24,7 +24,11 @@ const BuyerView = () => {
         </div>
         <div className="f-row f-spb">
           <p>From:</p>
-          <p>Louis (Wallet: 0xa4ba01c4...)</p>
+          <p>Louis </p>
+        </div>
+        <div className="f-row f-spb">
+          <p>Wallet:</p>
+          <p>0xa4ba01c4...</p>
         </div>
         <div className="f-row f-spb">
           <p>When:</p>
@@ -158,9 +162,10 @@ const GameLabel = styled.p`
 `;
 
 const GameSelect = styled.div`
-  padding: 0.8rem;
+  padding: 0.6rem 0.6rem 0.6rem 1rem;
   color: ${theme.color.TEXT_BLUE};
   background-color: ${theme.color.BACK_BLUE};
+  font-size: ${theme.font.SIZE.S};
   border-radius: 0.4rem;
   text-align: right;
 `;

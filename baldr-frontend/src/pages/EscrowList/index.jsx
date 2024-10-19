@@ -9,7 +9,6 @@ import {
   TabNavigation,
   TabButton,
   TradeListView,
-  SendTradeView,
   SectionHeader,
   SectionTitle,
   CountBadge,
@@ -87,7 +86,7 @@ const EscrowListPage = () => {
 
       <Wrapper className="big-pd">
         {/* Select Game Section */}
-        <GameSelection className="f-row f-spb">
+        <GameSelection className="f-row f-spb vc">
           <GameLabel>Game:</GameLabel>
           <GameSelect value={selectedGame} onChange={handleGameChange}>
             <option value="Maple Story">Maple Story (0x4ce2d015...)</option>
@@ -119,6 +118,7 @@ const EscrowListPage = () => {
               </div>
               <ExpandIcon open={doneOpen} className="f-row vc hc" />
             </SectionHeader>
+
             <CollapseWrapper open={doneOpen}>
               {escrowRequests
                 .filter((request) => request.status === "Done")
@@ -148,6 +148,7 @@ const EscrowListPage = () => {
               </div>
               <ExpandIcon open={processingOpen} />
             </SectionHeader>
+
             <CollapseWrapper open={processingOpen}>
               {escrowRequests
                 .filter((request) => request.status === "Processing")
@@ -173,10 +174,74 @@ const EscrowListPage = () => {
             </CollapseWrapper>
           </TradeListView>
         )}
+
         {activeTab === "send" && (
-          <SendTradeView>
-            <p>Send Trade Section (To be implemented)</p>
-          </SendTradeView>
+          <TradeListView>
+            {/* Done Dropdown */}
+            <SectionHeader onClick={handleToggleDone} className="">
+              <div className="f-row vc">
+                <SectionTitle>Done</SectionTitle>
+                <CountBadge>
+                  {escrowRequests.filter((req) => req.status === "Done").length}
+                </CountBadge>
+              </div>
+              <ExpandIcon open={doneOpen} className="f-row vc hc" />
+            </SectionHeader>
+
+            <CollapseWrapper open={doneOpen}>
+              {escrowRequests
+                .filter((request) => request.status === "Done")
+                .map((request) => (
+                  <TradeCard key={request.uuid}>
+                    <TradeCardContent>
+                      <div className="f-row f-spb">
+                        <p>{request.sender}</p>
+                        <p className="date">{request.date}</p>
+                      </div>
+                      <div className="f-row f-spb" style={{ marginTop: "1rem" }}>
+                        <p>{request.item}</p>
+                        <p>{request.price} Gold</p>
+                      </div>
+                    </TradeCardContent>
+                  </TradeCard>
+                ))}
+            </CollapseWrapper>
+
+            {/* Processing Dropdown */}
+            <SectionHeader onClick={handleToggleProcessing}>
+              <div className="f-row vc">
+                <SectionTitle>Processing</SectionTitle>
+                <BlueCountBadge>
+                  {escrowRequests.filter((req) => req.status === "Processing").length}
+                </BlueCountBadge>
+              </div>
+              <ExpandIcon open={processingOpen} />
+            </SectionHeader>
+
+            <CollapseWrapper open={processingOpen}>
+              {escrowRequests
+                .filter((request) => request.status === "Processing")
+                .map((request, index) => (
+                  <Link
+                    key={index}
+                    to={`/escrow/99/0xaffABfbDa8fb29E34ffd60545eDFBA3207731008/0xfa6Cc5134a2e81a2F19113992Ef61F9BE81cafdE/bbb08400-e29b-41d4-a716-446655440666-3`}
+                  >
+                    <TradeCard key={request.uuid}>
+                      <TradeCardContent>
+                        <div className="f-row f-spb">
+                          <p>{request.sender}</p>
+                          <p className="date">{request.date}</p>
+                        </div>
+                        <div className="f-row f-spb" style={{ marginTop: "1rem" }}>
+                          <p>{request.item}</p>
+                          <p>{request.price}</p>
+                        </div>
+                      </TradeCardContent>
+                    </TradeCard>
+                  </Link>
+                ))}
+            </CollapseWrapper>
+          </TradeListView>
         )}
       </Wrapper>
 
