@@ -2,13 +2,13 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
-import "../contracts/Escrow.sol";
+import "../src/Escrow.sol" as EscrowContract;
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 
 contract EscrowTest is Test, ERC1155Holder {
-    Escrow private escrow;
+    EscrowContract.Escrow private escrow;
     address private owner;
     address private buyer;
     address private seller;
@@ -27,7 +27,7 @@ contract EscrowTest is Test, ERC1155Holder {
         // Mint NFT to seller
         vm.startPrank(seller);
 
-        Escrow.TokenDetails[] memory tokenDetails = new Escrow.TokenDetails[](1);
+        EscrowContract.Escrow.TokenDetails[] memory tokenDetails = new Escrow.TokenDetails[](1);
         tokenDetails[0] = Escrow.TokenDetails({
             tokenId: 1,
             amount: 5,
@@ -37,13 +37,13 @@ contract EscrowTest is Test, ERC1155Holder {
         escrow.createTrade(buyer, tokenDetails);
         vm.stopPrank();
 
-        Escrow.Trade memory trade = escrow.getTradeDetails(1);
+        EscrowContract.Escrow.Trade memory trade = escrow.getTradeDetails(1);
         assertEq(trade.buyer.userAddress, buyer);
         assertEq(trade.seller.userAddress, seller);
         assertEq(trade.tokenDetails[0].tokenId, 1);
         assertEq(trade.tokenDetails[0].amount, 5);
         assertEq(trade.tokenDetails[0].price, 1 ether);
-        assertEq(uint256(trade.status), uint256(Escrow.TradeStatus.REQUESTED));
+        assertEq(uint256(trade.status), uint256(EscrowContract.Escrow.TradeStatus.REQUESTED));
     }
 
     function testDepositSellerTokens() public {
@@ -58,11 +58,11 @@ contract EscrowTest is Test, ERC1155Holder {
         });
 
         escrow.createTrade(buyer, tokenDetails);
-        escrow.deposit(1, _arrayOf(1), _arrayOf(5), address(escrow), Escrow.User.Seller);
+        escrow.deposit(1, _arrayOf(1), _arrayOf(5), address(escrow), EscrowContract.Escrow.User.Seller);
         vm.stopPrank();
 
         Escrow.Trade memory trade = escrow.getTradeDetails(1);
-        assertEq(uint256(trade.seller.userStatus), uint256(Escrow.UserStatus.DEPOSITED));
+        assertEq(uint256(trade.seller.userStatus), uint256(EscrowContract.Escrow.UserStatus.DEPOSITED));
     }
 
     function testDepositBuyerETH() public {
