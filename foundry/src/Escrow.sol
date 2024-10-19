@@ -3,17 +3,16 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 
-contract Escrow is ReentrancyGuard, ERC1155, Ownable {
+contract Escrow is ReentrancyGuard, Ownable, ERC1155Holder {
     uint256 public tradeCounter;
+    IERC1155 public tokenAddress;
 
-    constructor(address initialOwner)
-        ERC1155("https://sapphire-preferred-bison-599.mypinata.cloud/ipfs/QmWUcknL6WgU1uEozHBYFnxSqVFTangUb1fNHYj5Gc8aEk")
-        Ownable(initialOwner)
-    {
+    constructor(address initialOwner, address _tokenAddress) Ownable(initialOwner) {
         _transferOwnership(initialOwner);
+        tokenAddress = IERC1155(_tokenAddress);
     }
 
     // Struct to define trade details
@@ -53,13 +52,6 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
         uint256 price;
     }
 
-    struct UserInteraction {
-        uint256 tradeId;
-        Side side;
-        TradeStatus tradeStatus;
-        UserStatus userStatus;
-    }
-
     enum User {
         Buyer,
         Seller
@@ -85,7 +77,6 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
         uint256 tradeId,
         uint256[] memory tokenIds,
         uint256[] memory amounts,
-        address tokenAddress,
         User user
     ) public payable tradeExists(tradeId) nonReentrant {
         require(tokenIds.length == amounts.length, "Token IDs and amounts must have the same length");
@@ -96,18 +87,17 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
             require(msg.sender == trade.seller.userAddress, "Only the seller can deposit tokens");
             // Seller deposits their NFTs into the escrow contract
             for (uint256 i = 0; i < tokenIds.length; i++) {
-                IERC1155(tokenAddress).safeTransferFrom(
-                    msg.sender,        // Seller
-                    address(this),     // Escrow contract
-                    tokenIds[i],       // Token ID
-                    amounts[i],        // Amount to transfer
+                tokenAddress.safeTransferFrom(
+                    msg.sender, // Seller
+                    address(this), // Escrow contract
+                    tokenIds[i], // Token ID
+                    amounts[i], // Amount to transfer
                     ""
                 );
             }
 
             trade.seller.userStatus = UserStatus.DEPOSITED;
             emit DepositEvent(tradeId, msg.sender, user, trade.seller.userStatus);
-
         } else if (user == User.Buyer) {
             require(msg.sender == trade.buyer.userAddress, "Only the buyer can deposit ETH");
             // Buyer deposits Ether to match the trade price
@@ -128,31 +118,17 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
     }
 
     // Create a new trade
-    function createTrade(
-        address buyerAddress,
-        TokenDetails[] memory tokenDetails
-    )
-        external
-        nonReentrant
-    {
+    function createTrade(address buyerAddress, TokenDetails[] memory tokenDetails) external nonReentrant {
         require(buyerAddress != address(0), "Buyer address must be valid");
         require(tokenDetails.length > 0, "Invalid token details length");
 
         tradeCounter++;
         Trade storage newTrade = trades[tradeCounter];
         newTrade.tradeId = tradeCounter;
-        newTrade.buyer = Side({
-            user: User.Buyer,
-            userAddress: buyerAddress,
-            depositBalance: 0,
-            userStatus: UserStatus.REQUESTED
-        });
-        newTrade.seller = Side({
-            user: User.Seller,
-            userAddress: msg.sender,
-            depositBalance: 0,
-            userStatus: UserStatus.REQUESTED
-        });
+        newTrade.buyer =
+            Side({user: User.Buyer, userAddress: buyerAddress, depositBalance: 0, userStatus: UserStatus.REQUESTED});
+        newTrade.seller =
+            Side({user: User.Seller, userAddress: msg.sender, depositBalance: 0, userStatus: UserStatus.REQUESTED});
         newTrade.status = TradeStatus.REQUESTED;
         newTrade.requestTimestamp = block.timestamp;
         newTrade.completedTimestamp = 0;
@@ -170,44 +146,47 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
         Trade storage trade = trades[tradeId];
         require(trade.status != TradeStatus.COMPLETE, "Trade already completed");
 
+        // 확인: 판매자가 토큰을 입금했는지 확인
         if (msg.sender == trade.seller.userAddress) {
+            require(trade.seller.userStatus == UserStatus.DEPOSITED, "Seller must deposit tokens first");
             _confirmSeller(trade);
-        } else if (msg.sender == trade.buyer.userAddress) {
+        }
+        // 확인: 구매자가 이더리움을 입금했는지 확인
+        else if (msg.sender == trade.buyer.userAddress) {
+            require(trade.buyer.userStatus == UserStatus.DEPOSITED, "Buyer must deposit ETH first");
             _confirmBuyer(trade);
         } else {
             revert("Unauthorized access");
         }
 
+        // 최종 거래를 완료할 수 있는지 여부를 확인
         _finalizeTradeIfConfirmed(tradeId);
     }
 
-    // Get trade details
-    function getTradeDetails(uint256 tradeId) external view tradeExists(tradeId) returns (Trade memory) {
-        return trades[tradeId];
-    }
-
-    // ========== Internal functions for modularization ==========
-
-    // Confirm seller participation in the trade
-    function _confirmSeller(Trade storage trade) internal {
-        require(trade.seller.userStatus == UserStatus.DEPOSITED, "Seller must deposit tokens first");
-        trade.seller.userStatus = UserStatus.CONFIRMED;
-    }
-
-    // Confirm buyer participation and deposit ETH
+    // 내부적으로 구매자가 이더리움을 입금했는지 확인하는 함수
     function _confirmBuyer(Trade storage trade) internal {
-        require(trade.buyer.userStatus == UserStatus.DEPOSITED, "Buyer must deposit ETH first");
+        require(trade.buyer.depositBalance > 0, "Buyer has not deposited ETH");
         trade.buyer.userStatus = UserStatus.CONFIRMED;
     }
 
-    // Finalize the trade if both buyer and seller have confirmed
+    // 내부적으로 판매자가 토큰을 입금했는지 확인하는 함수
+    function _confirmSeller(Trade storage trade) internal {
+        // Escrow 컨트랙트의 토큰 잔고 확인
+        uint256 escrowBalance = tokenAddress.balanceOf(address(this), trade.tokenDetails[0].tokenId);
+        require(escrowBalance >= trade.tokenDetails[0].amount, "Insufficient token balance in Escrow");
+
+        trade.seller.userStatus = UserStatus.CONFIRMED;
+    }
+
+    // 두 사용자 모두가 거래를 확인한 경우 거래를 완료하는 함수
     function _finalizeTradeIfConfirmed(uint256 tradeId) internal {
         Trade storage trade = trades[tradeId];
 
-        if (trade.buyer.userStatus == UserStatus.CONFIRMED && trade.seller.userStatus == UserStatus.CONFIRMED) {
-            // Transfer NFTs to the buyer
+        // 구매자와 판매자가 모두 거래를 확인한 경우
+        if (trade.seller.userStatus == UserStatus.CONFIRMED && trade.buyer.userStatus == UserStatus.CONFIRMED) {
+            // 판매자로부터 구매자에게 토큰 전송
             for (uint256 i = 0; i < trade.tokenDetails.length; i++) {
-                IERC1155(address(this)).safeTransferFrom(
+                tokenAddress.safeTransferFrom(
                     address(this),
                     trade.buyer.userAddress,
                     trade.tokenDetails[i].tokenId,
@@ -216,7 +195,7 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
                 );
             }
 
-            // Transfer ETH to the seller using call
+            // 구매자가 입금한 ETH를 판매자에게 전송
             (bool success,) = payable(trade.seller.userAddress).call{value: trade.buyer.depositBalance}("");
             require(success, "ETH Transfer failed");
 
@@ -227,17 +206,12 @@ contract Escrow is ReentrancyGuard, ERC1155, Ownable {
         }
     }
 
-    function mint(address account, uint256 id, uint256 amount, bytes memory data)
-        public
-        onlyOwner
-    {
-        _mint(account, id, amount, data);
+    function supportsInterface(bytes4 interfaceId) public view override(ERC1155Holder) returns (bool) {
+        return super.supportsInterface(interfaceId);
     }
 
-    function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data)
-        public
-        onlyOwner
-    {
-        _mintBatch(to, ids, amounts, data);
+    function getTradeDetails(uint256 tradeId) external view tradeExists(tradeId) returns (Trade memory) {
+        return trades[tradeId];
     }
+
 }
