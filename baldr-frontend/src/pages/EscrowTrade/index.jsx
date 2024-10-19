@@ -51,14 +51,14 @@ const EscrowTradePage = () => {
           <SellerView
             sellerAddress={sellerAddress}
             buyerAddress={buyerAddress}
-            tradeData={userInfo}
+            tradeData={userInfo.request}
           />
         )}
         {isBuyer && (
           <BuyerView
             sellerAddress={sellerAddress}
             buyerAddress={buyerAddress}
-            tradeData={userInfo}
+            tradeData={userInfo.request}
           />
         )}
       </Wrapper>
