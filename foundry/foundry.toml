@@ -5,5 +5,11 @@ libs = ["lib"]
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
 
-rpc_url="https://rpc-amoy.polygon.technology"
+rpc_url="https://polygon-amoy.g.alchemy.com/v2/pkHx6pj0u2G76QD14i_eIH91oYZAsXqc"
 etherscan_api_key="YFVKAZ13MC7AH6BW8KXWS9D55TJ3154QIC"
+
+[etherscan]
+polygon-amoy = { key = "${AMOY_API_KEY}", url = "https://www.oklink.com/api/explorer/v1/contract/verify/async/api/polygonAmoy" }
+
+[profile.default.env]
+PRIVATE_KEY = "0xbc119e657cc6a1cb457ccbc152252b372f194013836fc4ff0e716aa6917c4480"

@@ -1,0 +1,50 @@
+type ConfirmationEvent @entity(immutable: true) {
+  id: Bytes!
+  tradeId: BigInt! # uint256
+  tradeStatus: Int! # uint8
+  completedTimestamp: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type DepositEvent @entity(immutable: true) {
+  id: Bytes!
+  tradeId: BigInt! # uint256
+  userAddress: Bytes! # address
+  user: Int! # uint8
+  userStatus: Int! # uint8
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TradeCreated @entity(immutable: true) {
+  id: Bytes!
+  tradeId: BigInt! # uint256
+  seller: Bytes! # address
+  buyer: Bytes! # address
+  timestamp: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type WithdrawEvent @entity(immutable: true) {
+  id: Bytes!
+  tradeId: BigInt! # uint256
+  userAddress: Bytes! # address
+  user: Int! # uint8
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

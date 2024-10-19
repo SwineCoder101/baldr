@@ -1,0 +1,38 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Contract
+    network: polygon-amoy
+    source:
+      address: "0x137f6ad66a03b03674625cd82cb24e24bea7312d"
+      abi: Contract
+      startBlock: 13374161
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - ConfirmationEvent
+        - DepositEvent
+        - OwnershipTransferred
+        - TradeCreated
+        - WithdrawEvent
+      abis:
+        - name: Contract
+          file: ./abis/Contract.json
+      eventHandlers:
+        - event: ConfirmationEvent(uint256,uint8,uint256)
+          handler: handleConfirmationEvent
+        - event: DepositEvent(uint256,address,uint8,uint8)
+          handler: handleDepositEvent
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: TradeCreated(uint256,indexed address,indexed address,uint256)
+          handler: handleTradeCreated
+        - event: WithdrawEvent(uint256,address,uint8)
+          handler: handleWithdrawEvent
+      file: ./src/contract.ts
