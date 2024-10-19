@@ -55,8 +55,6 @@ forge script ./script/Deploy.s.sol:TokenScript \
   --private-key $PRIVATE_KEY \
   --broadcast \
   --verify \
-  --verifier oklink \
-  --verifier-url https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/POLYGON_ZKEVM_TESTNET \
   --legacy
 
 # forge verify-contract <the_contract_address>
