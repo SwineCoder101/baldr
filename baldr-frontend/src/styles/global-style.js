@@ -33,7 +33,7 @@ const CustomClass = `
   }
 
   .big-pd {
-    padding: 1.8rem;
+    padding: 2rem;
   }
 `;
 
