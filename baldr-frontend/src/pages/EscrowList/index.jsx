@@ -48,7 +48,7 @@ const escrowRequests = [
     status: "Processing",
   },
   {
-    tokenId: 3,
+    tokenId: 2,
     sender: "DuckDuck",
     price: "$750",
     quantity: 1,
@@ -60,7 +60,7 @@ const escrowRequests = [
     status: "Done",
   },
   {
-    tokenId: 4,
+    tokenId: 3,
     sender: "JamJam",
     price: "$150",
     quantity: 1,
@@ -139,7 +139,11 @@ const EscrowListPage = () => {
               <div className="f-row vc">
                 <SectionTitle>Done</SectionTitle>
                 <CountBadge>
-                  {escrowRequests.filter((req) => req.status === "Done").length}
+                  {
+                    escrowRequests.filter(
+                      (req) => req.status === "Done" && req.walletAddress !== MY_WALLET_ADDRESS
+                    ).length
+                  }
                 </CountBadge>
               </div>
               <ExpandIcon open={doneOpen} className="f-row vc hc" />
@@ -147,7 +151,10 @@ const EscrowListPage = () => {
 
             <CollapseWrapper open={doneOpen}>
               {escrowRequests
-                .filter((request) => request.status === "Done")
+                .filter(
+                  (request) =>
+                    request.status === "Done" && request.walletAddress !== MY_WALLET_ADDRESS
+                )
                 .map((request) => (
                   <TradeCard key={request.uuid}>
                     <TradeCardContent>
@@ -169,7 +176,12 @@ const EscrowListPage = () => {
               <div className="f-row vc">
                 <SectionTitle>Processing</SectionTitle>
                 <BlueCountBadge>
-                  {escrowRequests.filter((req) => req.status === "Processing").length}
+                  {
+                    escrowRequests.filter(
+                      (req) =>
+                        req.status === "Processing" && req.walletAddress !== MY_WALLET_ADDRESS
+                    ).length
+                  }
                 </BlueCountBadge>
               </div>
               <ExpandIcon open={processingOpen} />
@@ -177,7 +189,10 @@ const EscrowListPage = () => {
 
             <CollapseWrapper open={processingOpen}>
               {escrowRequests
-                .filter((request) => request.status === "Processing")
+                .filter(
+                  (request) =>
+                    request.status === "Processing" && request.walletAddress !== MY_WALLET_ADDRESS
+                )
                 .map((request) => (
                   <TradeCard key={request.uuid} onClick={() => handleTradeClick(request)}>
                     <TradeCardContent>
@@ -203,7 +218,11 @@ const EscrowListPage = () => {
               <div className="f-row vc">
                 <SectionTitle>Done</SectionTitle>
                 <CountBadge>
-                  {escrowRequests.filter((req) => req.status === "Done").length}
+                  {
+                    escrowRequests.filter(
+                      (req) => req.status === "Done" && req.walletAddress === MY_WALLET_ADDRESS
+                    ).length
+                  }
                 </CountBadge>
               </div>
               <ExpandIcon open={doneOpen} className="f-row vc hc" />
@@ -211,7 +230,10 @@ const EscrowListPage = () => {
 
             <CollapseWrapper open={doneOpen}>
               {escrowRequests
-                .filter((request) => request.status === "Done")
+                .filter(
+                  (request) =>
+                    request.status === "Done" && request.walletAddress === MY_WALLET_ADDRESS
+                )
                 .map((request) => (
                   <TradeCard key={request.uuid}>
                     <TradeCardContent>
@@ -233,7 +255,12 @@ const EscrowListPage = () => {
               <div className="f-row vc">
                 <SectionTitle>Processing</SectionTitle>
                 <BlueCountBadge>
-                  {escrowRequests.filter((req) => req.status === "Processing").length}
+                  {
+                    escrowRequests.filter(
+                      (req) =>
+                        req.status === "Processing" && req.walletAddress === MY_WALLET_ADDRESS
+                    ).length
+                  }
                 </BlueCountBadge>
               </div>
               <ExpandIcon open={processingOpen} />
@@ -241,7 +268,10 @@ const EscrowListPage = () => {
 
             <CollapseWrapper open={processingOpen}>
               {escrowRequests
-                .filter((request) => request.status === "Processing")
+                .filter(
+                  (request) =>
+                    request.status === "Processing" && request.walletAddress === MY_WALLET_ADDRESS
+                )
                 .map((request, index) => (
                   <Link
                     key={index}
