@@ -17,6 +17,17 @@ const CustomClass = `
     justify-content: space-between;
   }
 
+  .hc {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .vc {
+    display: flex;
+    align-items: center;
+  }
+
   .small-pd {
     padding: 1rem;
   }
