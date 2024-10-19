@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import LogoTopBar from "../../components/LogoTopBar";
 import BottomNavBar from "../../components/BottomNavBar";
+import SellerView from "./SellerView";
+import BuyerView from "./BuyerView";
 
 const EscrowTradePage = () => {
   const data = useParams();
@@ -42,6 +44,8 @@ const EscrowTradePage = () => {
       <LogoTopBar />
 
       <Wrapper>
+        <div> {isSeller && <SellerView data={data} />} </div>
+        <div> {isBuyer && <BuyerView data={data} />} </div>
       </Wrapper>
 
       <BottomNavBar />

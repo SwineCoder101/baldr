@@ -27,11 +27,11 @@ const escrowRequests = [
   {
     id: 1,
     uuid: "550e8400-e29b-41d4-a716-446655440000",
-    sender: "User123",
+    sender: "Louis",
     price: "$100",
     quantity: 1,
-    date: "2024-10-14",
-    item: "Sword of Power",
+    date: "14/10/2024 - 07:11pm",
+    item: "Happy Mushroom",
     contractAddress: "0x123...abc",
     walletAddress: "0xABC123...789",
     trustScore: 85, // Trust score out of 100
@@ -164,7 +164,7 @@ const EscrowListPage = () => {
                         </div>
                         <div className="f-row f-spb" style={{ marginTop: "1rem" }}>
                           <p>{request.item}</p>
-                          <p>{request.price} Gold</p>
+                          <p>{request.price}</p>
                         </div>
                       </TradeCardContent>
                     </TradeCard>
