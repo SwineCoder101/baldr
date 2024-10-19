@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ROUTE_PATH } from "../../common/const";
+import { MY_WALLET_ADDRESS, ROUTE_PATH } from "../../common/const";
 import {
   Wrapper,
   GameSelection,
@@ -24,31 +24,51 @@ import BottomNavBar from "../../components/BottomNavBar";
 // Sample data for escrow requests
 const escrowRequests = [
   {
-    id: 1,
-    uuid: "550e8400-e29b-41d4-a716-446655440000",
+    tokenId: 0,
     sender: "Louis",
     price: "$100",
     quantity: 1,
-    date: "14/10/2024 - 07:11pm",
+    date: "19/10/2024 - 07:11pm",
     item: "Happy Mushroom",
-    contractAddress: "0x123...abc",
-    walletAddress: "0xABC123...789",
-    trustScore: 85, // Trust score out of 100
-    tokenId: "12345",
+    contractAddress: "0xe38995f919822a378a66c89eb7e68a9bc0f88f18",
+    walletAddress: "0xedc5fb724f19b4d9e45258f0f8438bff62ab058f",
+    trustScore: 65, // Trust score out of 100
     status: "Processing",
   },
   {
-    id: 2,
-    uuid: "660e8400-e29b-41d4-a716-446655440111",
-    sender: "User456",
+    tokenId: 1,
+    sender: "NotScammer",
     price: "$200",
     quantity: 2,
-    date: "2024-10-13",
+    date: "14/10/2024 - 06:30pm",
     item: "Shield of Valor",
-    contractAddress: "0x456...def",
-    walletAddress: "0xDEF456...012",
-    trustScore: 70, // Trust score out of 100
-    tokenId: "67890",
+    contractAddress: "0xc61673b172adc6dcc6937f0a427817de4ea2e519",
+    walletAddress: "0xeffec0407c715472c43dcba49ce5d7056318f5ee",
+    trustScore: 10, // Trust score out of 100
+    status: "Processing",
+  },
+  {
+    tokenId: 3,
+    sender: "DuckDuck",
+    price: "$750",
+    quantity: 1,
+    date: "11/10/2024 - 01:04am",
+    item: "Doran's Ring",
+    contractAddress: "0x0c59603550d0722ebb61edcccb9bc7c99d4fd54f",
+    walletAddress: "0x82ec3687b8376244e720ab6076944e9e004cff7e",
+    trustScore: 80, // Trust score out of 100
+    status: "Done",
+  },
+  {
+    tokenId: 4,
+    sender: "JamJam",
+    price: "$150",
+    quantity: 1,
+    date: "10/10/2024 - 09:10am",
+    item: "Hack Mac",
+    contractAddress: "0x769ac1e37dd301e4ffadba4c440450a781a2e0d9",
+    walletAddress: "0xfa6Cc5134a2e81a2F19113992Ef61F9BE81cafdE",
+    trustScore: 80, // Trust score out of 100
     status: "Done",
   },
 ];
@@ -78,6 +98,12 @@ const EscrowListPage = () => {
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+  };
+
+  const handleTradeClick = (request) => {
+    // escrow/:escrowCount/:sellerAddress/:buyerAddress
+    const url = `/escrow/${request.tokenId}/${request.walletAddress}/${MY_WALLET_ADDRESS}`;
+    navigate(url, { state: { request } });
   };
 
   return (
@@ -131,7 +157,7 @@ const EscrowListPage = () => {
                       </div>
                       <div className="f-row f-spb" style={{ marginTop: "1rem" }}>
                         <p>{request.item}</p>
-                        <p>{request.price} Gold</p>
+                        <p>{request.price}</p>
                       </div>
                     </TradeCardContent>
                   </TradeCard>
@@ -152,24 +178,19 @@ const EscrowListPage = () => {
             <CollapseWrapper open={processingOpen}>
               {escrowRequests
                 .filter((request) => request.status === "Processing")
-                .map((request, index) => (
-                  <Link
-                    key={index}
-                    to={`/escrow/99/0xaffABfbDa8fb29E34ffd60545eDFBA3207731008/0xfa6Cc5134a2e81a2F19113992Ef61F9BE81cafdE/bbb08400-e29b-41d4-a716-446655440666-3`}
-                  >
-                    <TradeCard key={request.uuid}>
-                      <TradeCardContent>
-                        <div className="f-row f-spb">
-                          <p>{request.sender}</p>
-                          <p className="date">{request.date}</p>
-                        </div>
-                        <div className="f-row f-spb" style={{ marginTop: "1rem" }}>
-                          <p>{request.item}</p>
-                          <p>{request.price}</p>
-                        </div>
-                      </TradeCardContent>
-                    </TradeCard>
-                  </Link>
+                .map((request) => (
+                  <TradeCard key={request.uuid} onClick={() => handleTradeClick(request)}>
+                    <TradeCardContent>
+                      <div className="f-row f-spb">
+                        <p>{request.sender}</p>
+                        <p className="date">{request.date}</p>
+                      </div>
+                      <div className="f-row f-spb" style={{ marginTop: "1rem" }}>
+                        <p>{request.item}</p>
+                        <p>{request.price}</p>
+                      </div>
+                    </TradeCardContent>
+                  </TradeCard>
                 ))}
             </CollapseWrapper>
           </TradeListView>
@@ -200,7 +221,7 @@ const EscrowListPage = () => {
                       </div>
                       <div className="f-row f-spb" style={{ marginTop: "1rem" }}>
                         <p>{request.item}</p>
-                        <p>{request.price} Gold</p>
+                        <p>{request.price}</p>
                       </div>
                     </TradeCardContent>
                   </TradeCard>
