@@ -1,25 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATH } from "../../common/const";
-import {
-  Wrapper,
-  GameSelection,
-  GameLabel,
-  GameSelect,
-  TabNavigation,
-  TabButton,
-  TradeListView,
-  SendTradeView,
-  SectionHeader,
-  SectionTitle,
-  CountBadge,
-  ExpandIcon,
-  CollapseWrapper,
-  TradeCard,
-  TradeCardContent,
-  TradeInfo,
-  ProgressBar,
-} from "./style";
+import { Wrapper, GameSelection, GameLabel, GameSelect, TabNavigation, TabButton } from "./style";
 import LogoTopBar from "../../components/LogoTopBar";
 import BottomNavBar from "../../components/BottomNavBar";
 
@@ -58,8 +40,6 @@ const escrowRequests = [
 const EscrowListPage = () => {
   const navigate = useNavigate();
   const [selectedGame, setSelectedGame] = useState("Maple Story");
-  const [doneOpen, setDoneOpen] = useState(false);
-  const [processingOpen, setProcessingOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("received");
 
   useEffect(() => {
@@ -68,14 +48,6 @@ const EscrowListPage = () => {
 
   const handleGameChange = (event) => {
     setSelectedGame(event.target.value);
-  };
-
-  const handleToggleDone = () => {
-    setDoneOpen(!doneOpen);
-  };
-
-  const handleToggleProcessing = () => {
-    setProcessingOpen(!processingOpen);
   };
 
   const handleTabChange = (tab) => {
@@ -96,6 +68,16 @@ const EscrowListPage = () => {
             <option value="World of Warcraft">World of Warcraft (0x1dcd02be...)</option>
           </GameSelect>
         </GameSelection>
+
+        {/* Tab Navigation Section */}
+        <TabNavigation className="f-row f-spb">
+          <TabButton active={activeTab === "received"} onClick={() => handleTabChange("received")}>
+            Received Trade
+          </TabButton>
+          <TabButton active={activeTab === "send"} onClick={() => handleTabChange("send")}>
+            Send Trade
+          </TabButton>
+        </TabNavigation>
       </Wrapper>
 
       <BottomNavBar />
