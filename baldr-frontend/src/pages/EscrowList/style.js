@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   font-size: ${theme.font.SIZE.ML};
   font-weight: 600;
   height: 100vh;
-  padding-top: 8rem;
+  padding-top: 8rem !important;
 `;
 
 export const GameSelection = styled.div`
@@ -46,7 +46,8 @@ export const TabButton = styled.button`
   font-size: ${theme.font.SIZE.M};
   color: ${({ active }) => (active ? theme.color.WHITE : theme.color.TEXT_GRAY)};
   border: none;
-  border-bottom: ${({ active }) => (active ? `2px solid ${theme.color.WHITE}` : "none")};
+  border-bottom: ${({ active }) =>
+    active ? `2px solid ${theme.color.WHITE}` : `2px solid ${theme.color.TEXT_GRAY}`};
   cursor: pointer;
   outline: none;
   transition: color 0.3s, background-color 0.3s;
@@ -78,7 +79,7 @@ export const CountBadge = styled.div`
   background-color: ${theme.color.BACK_GREEN};
   color: ${theme.color.TEXT_GREEN};
   font-size: 1.4rem;
-  padding: 4px 6px;
+  padding: 4px 10px;
   border-radius: 4px;
   margin-left: 1rem;
 `;
@@ -87,7 +88,7 @@ export const BlueCountBadge = styled.div`
   background-color: ${theme.color.BACK_BLUE};
   color: ${theme.color.TEXT_BLUE};
   font-size: 1.4rem;
-  padding: 4px 6px;
+  padding: 4px 10px;
   border-radius: 4px;
   margin-left: 1rem;
 `;
@@ -96,12 +97,15 @@ export const ExpandIcon = styled.div`
   width: 3rem;
   height: 3rem;
   transform: ${({ open }) => (open ? "rotate(0deg)" : "rotate(180deg)")};
+  transition: transform 0.3s ease;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
 `;
 
 export const CollapseWrapper = styled.div`
-  display: ${({ open }) => (open ? "block" : "none")};
+  overflow: hidden;
+  max-height: ${({ open }) => (open ? "1000px" : "0")};
+  transition: max-height 0.5s ease-in-out;
   margin-top: 1rem;
 `;
 

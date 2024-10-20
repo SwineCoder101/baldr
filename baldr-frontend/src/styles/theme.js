@@ -1,5 +1,5 @@
 const color = {
-  MAIN_BLACK: "#101012", // background
+  MAIN_BLACK: "#17171D", // background
   BACK_BLACK: "#202027", // bottom bar
   BACK_GRAY: "#2C2C34", // box background
   TEXT_GRAY: "#7E7E87",

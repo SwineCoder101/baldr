@@ -60,7 +60,7 @@ const InventoryPage = () => {
       <Wrapper>
         {/* Select Game Section */}
         <GameSelection className="f-row f-spb">
-          <GameLabel>Game:</GameLabel>
+          <GameLabel>Game</GameLabel>
           <GameSelect value={selectedGame} onChange={handleGameChange}>
             <option value="Maple Story">Maple Story (0x4ce2d015...)</option>
             <option value="League of Legends">League of Legends (0xa42b0cde...)</option>
@@ -77,10 +77,18 @@ const InventoryPage = () => {
                 {selectedItem === index && (
                   <DropdownMenu>
                     <MenuItem onClick={() => handleMenuItemClick("Escrow")}>Escrow</MenuItem>
-                    <MenuItem onClick={() => handleMenuItemClick("Transfer")}>Transfer</MenuItem>
-                    <MenuItem onClick={() => handleMenuItemClick("Rental")}>Rental</MenuItem>
-                    <MenuItem onClick={() => handleMenuItemClick("Lending")}>Lending</MenuItem>
-                    <MenuItem onClick={() => handleMenuItemClick("Auction")}>Auction</MenuItem>
+                    <MenuItem className="none" onClick={() => handleMenuItemClick("Transfer")}>
+                      Transfer
+                    </MenuItem>
+                    <MenuItem className="none" onClick={() => handleMenuItemClick("Rental")}>
+                      Rental
+                    </MenuItem>
+                    <MenuItem className="none" onClick={() => handleMenuItemClick("Lending")}>
+                      Lending
+                    </MenuItem>
+                    <MenuItem className="none" onClick={() => handleMenuItemClick("Auction")}>
+                      Auction
+                    </MenuItem>
                   </DropdownMenu>
                 )}
               </ItemBox>

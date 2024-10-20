@@ -1,26 +1,20 @@
 import styled from "styled-components";
 import theme from "../styles/theme";
-import Baldr from "../assets/image/baldr.png";
+import Logo from "../assets/image/logo.png";
 
-import {
-  
-  DynamicWidget,
-} from "@dynamic-labs/sdk-react-core";
+import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
 import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
-
-
-
 
 const LogoTopBar = () => {
   return (
     <Wrapper className="f-row f-spb vc">
       <div id="title" className="f-row vc">
-        <img id="logo" src={Baldr} />
+        <img id="logo" src={Logo} />
         <p>Baldr</p>
       </div>
       <DynamicWagmiConnector>
-            <DynamicWidget />
-          </DynamicWagmiConnector>
+        <DynamicWidget />
+      </DynamicWagmiConnector>
     </Wrapper>
   );
 };
