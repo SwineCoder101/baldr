@@ -10,18 +10,16 @@ contract TokenScript is Script {
 
     Escrow public escrow;
     Token public token;
-    address public DEPLOYER = 0x167d9b14C36EB55492faF39dD1f2ABe943f4bAb5;
+    address public DEPLOYER = 0xd1D1B8F0B6740fad9Fb4166EeEEFEDDB84770938;
 
     function run() public {
-        uint256 deployerPrivateKey = 0xbc119e657cc6a1cb457ccbc152252b372f194013836fc4ff0e716aa6917c4480;
-
+        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
 
         vm.startBroadcast(deployerPrivateKey);
 
         token = new Token(DEPLOYER);
-        escrow = new Escrow(DEPLOYER, address(token));
+        escrow = new Escrow(DEPLOYER,address(token));
 
         vm.stopBroadcast();
     }
 }
-
