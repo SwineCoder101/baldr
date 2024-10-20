@@ -6,9 +6,11 @@ import LogoTopBar from "../../components/LogoTopBar";
 import BottomNavBar from "../../components/BottomNavBar";
 import SellerView from "./SellerView";
 import BuyerView from "./BuyerView";
-import { MY_WALLET_ADDRESS } from "../../common/const";
+import { MY_WALLET_ADDRESS, ROUTE_PATH } from "../../common/const";
 
 const EscrowTradePage = () => {
+  const navigate = useNavigate();
+
   const data = useParams();
   const { escrowCount, sellerAddress, buyerAddress } = data;
   // console.log(data);
@@ -27,18 +29,16 @@ const EscrowTradePage = () => {
 
   const isSeller = sellerAddress === MY_WALLET_ADDRESS;
   const isBuyer = buyerAddress === MY_WALLET_ADDRESS;
-  // console.log(isSeller, isBuyer);
 
   useEffect(() => {
     if (!isSeller && !isBuyer) {
-      // TODO: route back for demo video
-      console.log("you are not the seller or the buyer");
-      throw new Error("you are not the seller or the buyer");
+      alert("you are not the seller or the buyer");
+      navigate(ROUTE_PATH.ESCROW_LIST);
     }
 
     if (isSeller && isBuyer) {
-      console.log("you are the seller and the buyer");
-      throw new Error("you are the seller and the buyer");
+      alert("you are not the seller and the buyer");
+      navigate(ROUTE_PATH.ESCROW_LIST);
     }
   }, []);
 

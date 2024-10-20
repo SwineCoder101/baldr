@@ -69,7 +69,7 @@ const escrowRequests = [
     contractAddress: "0x769ac1e37dd301e4ffadba4c440450a781a2e0d9",
     walletAddress: MY_WALLET_ADDRESS,
     trustScore: 80, // Trust score out of 100
-    status: "Done",
+    status: "Processing",
   },
 ];
 
@@ -102,6 +102,7 @@ const EscrowListPage = () => {
 
   const handleTradeClick = (request) => {
     // escrow/:escrowCount/:sellerAddress/:buyerAddress
+    // TODO: not always buyer is me (other user)
     const url = `/escrow/${request.tokenId}/${request.walletAddress}/${MY_WALLET_ADDRESS}`;
     navigate(url, { state: { request } });
   };
