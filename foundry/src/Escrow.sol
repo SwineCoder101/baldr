@@ -5,14 +5,21 @@ import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
+import { ISP } from "@ethsign/sign-protocol-evm/src/interfaces/ISP.sol";
+import { Attestation } from "@ethsign/sign-protocol-evm/src/models/Attestation.sol";
+import { DataLocation } from "@ethsign/sign-protocol-evm/src/models/DataLocation.sol";
 
 contract Escrow is ReentrancyGuard, Ownable, ERC1155Holder {
     uint256 public tradeCounter;
     IERC1155 public tokenAddress;
+    ISP public spInstance;
 
-    constructor(address initialOwner, address _tokenAddress) Ownable(initialOwner) {
+    uint64 public schemaId;
+
+    constructor(address initialOwner, address _tokenAddress, address signProtocolAddress) Ownable(initialOwner) {
         _transferOwnership(initialOwner);
         tokenAddress = IERC1155(_tokenAddress);
+        spInstance = ISP(signProtocolAddress);
     }
 
     // Struct to define trade details
@@ -50,6 +57,15 @@ contract Escrow is ReentrancyGuard, Ownable, ERC1155Holder {
         uint256 tokenId;
         uint256 amount;
         uint256 price;
+    }
+
+    struct AttestTrade {
+        address seller;
+        address buyer;
+        uint256 buyTokenId;
+        uint256 sellTokenId;
+        uint256 buyPrice;
+        uint256 sellPrice;
     }
 
     enum User {
@@ -159,6 +175,8 @@ contract Escrow is ReentrancyGuard, Ownable, ERC1155Holder {
             revert("Unauthorized access");
         }
 
+        _attestTrade(tradeId);
+
         // Finalize trade if both parties have confirmed
         _finalizeTradeIfConfirmed(tradeId);
     }
@@ -166,6 +184,48 @@ contract Escrow is ReentrancyGuard, Ownable, ERC1155Holder {
     function _confirmBuyer(Trade storage trade) internal {
         require(trade.buyer.depositBalance > 0, "Buyer has not deposited ETH");
         trade.buyer.userStatus = UserStatus.CONFIRMED;
+    }
+
+    function setSchemaID(uint64 schemaId_) external onlyOwner {
+        schemaId = schemaId_;
+    }
+
+
+    function _attestTrade(uint256 tradeId) internal {
+         Trade storage trade = trades[tradeId];
+         
+
+         bytes[] memory recipients = new bytes[](2);
+
+        recipients[0] = abi.encode(trade.seller.userAddress);
+        recipients[1] = abi.encode(trade.buyer.userAddress);
+
+        AttestTrade memory att = AttestTrade({
+            seller: trade.seller.userAddress,
+            buyer: trade.buyer.userAddress,
+            buyTokenId: trade.tokenDetails[0].tokenId,
+            sellTokenId: trade.tokenDetails[0].tokenId,
+            buyPrice: trade.tokenDetails[0].price,
+            sellPrice: trade.tokenDetails[0].price
+        });
+
+        bytes memory data = abi.encode(att);
+
+        Attestation memory a = Attestation({
+                schemaId: schemaId,
+                linkedAttestationId: 0,
+                attestTimestamp: 0,
+                revokeTimestamp: 0,
+                attester: address(this),
+                validUntil: 0,
+                dataLocation: DataLocation.ONCHAIN,
+                revoked: false,
+                recipients: recipients,
+                data: data // SignScan assumes this is from `abi.encode(...)`
+                });
+
+
+        spInstance.attest(a, "","","");
     }
 
     function _confirmSeller(Trade storage trade) internal {
