@@ -7,4 +7,6 @@ export const ROUTE_PATH = {
   ESCROW_TRADE: "/escrow/:escrowCount/:sellerAddress/:buyerAddress",
 };
 
-export const MY_WALLET_ADDRESS = "0xfa6Cc5134a2e81a2F19113992Ef61F9BE81cafdE";
+
+// polygon amoy testnet
+export const NFT_CONTRACT_ADDRESS = "0x2E17801201822f5Ef02285D6c002bd819fd9969d";

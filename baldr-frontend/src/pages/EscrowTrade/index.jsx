@@ -6,16 +6,19 @@ import LogoTopBar from "../../components/LogoTopBar";
 import BottomNavBar from "../../components/BottomNavBar";
 import SellerView from "./SellerView";
 import BuyerView from "./BuyerView";
-import { MY_WALLET_ADDRESS } from "../../common/const";
+import { getMyWalletAddress } from "../../utils";
+import { useAccount } from "wagmi";
 
 const EscrowTradePage = () => {
   const data = useParams();
   const { escrowCount, sellerAddress, buyerAddress } = data;
-  // console.log(data);
 
   const location = useLocation();
   const userInfo = { ...location.state };
   // console.log(userInfo.request);
+
+  const { address } = useAccount();
+  const myAddress = address;
 
   // destructure the data object
   // myaddress
@@ -25,8 +28,8 @@ const EscrowTradePage = () => {
   // amount
   // status
 
-  const isSeller = sellerAddress === MY_WALLET_ADDRESS;
-  const isBuyer = buyerAddress === MY_WALLET_ADDRESS;
+  const isSeller = sellerAddress === myAddress;
+  const isBuyer = buyerAddress === myAddress;
   // console.log(isSeller, isBuyer);
 
   useEffect(() => {

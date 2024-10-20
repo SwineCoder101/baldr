@@ -1,21 +1,28 @@
 import { Wrapper, Form, Label, Input, CreateTradeButton } from "./style";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MY_WALLET_ADDRESS, ROUTE_PATH } from "../../common/const";
+import { NFT_CONTRACT_ADDRESS, ROUTE_PATH } from "../../common/const";
 import { truncateText } from "../../common/commons";
 import LogoTopBar from "../../components/LogoTopBar";
-import { createTrade } from "../../utils";
-import { useWriteContract } from 'wagmi'
+import { useWriteContract, useAccount } from 'wagmi'
+import { fefe } from '../../components/abi'
 
 const EscrowCreatePage = () => {
+
+  const abi = fefe.abi
+
   const navigate = useNavigate();
 
   const { writeContract } = useWriteContract()
+  const { address } = useAccount()
+
+  console.log("my address: ", address);
+
 
   const [formData, setFormData] = useState({
     game: "Maple Story",
-    sellerAddress: MY_WALLET_ADDRESS,
-    nftContractAddress: "0xcf7c359ff84e540f",
+    sellerAddress: address,
+    nftContractAddress: NFT_CONTRACT_ADDRESS,
     buyerAddress: "",
     tokenId: 99,
     price: 1,
@@ -27,7 +34,7 @@ const EscrowCreatePage = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleCreateTrade = () => {
+  const handleCreateTrade = async () => {
     console.log("create Trade");
     const buyerAddress = formData.buyerAddress;
     const tokenDetails = {
@@ -36,18 +43,18 @@ const EscrowCreatePage = () => {
       price: formData.price,
     };
 
-    // const result = writeContract({
-    //     abi,
-    //     address: '0x2da2d32ecdcb7c89b0fc435625b1052cddae2d5e',
-    //     functionName: 'createTrade',
-    //     args: [
-    //       buyerAddress, tokenDetails
-    //     ],
-    // })
+    const result = writeContract({
+        abi,
+        address: '0xca4944605e921f8f92e9b3071f92fc10e2ad3712',
+        functionName: 'createTrade',
+        args: [
+          buyerAddress, tokenDetails
+        ],
+    })
+
 
     console.log(buyerAddress, tokenDetails)
 
-    navigate(ROUTE_PATH.ESCROW_LIST);
   };
 
 
@@ -98,7 +105,30 @@ const EscrowCreatePage = () => {
             placeholder="Amount"
           />
 
-          <CreateTradeButton onClick={handleCreateTrade}>Create Trade</CreateTradeButton>
+          <CreateTradeButton onClick={
+            async () => {
+              const buyerAddress = formData.buyerAddress;
+              const tokenDetails = [{
+                tokenId: Number(formData.tokenId),
+                amount: Number(formData.amount),
+                price: Number(formData.price),
+              }];
+
+              console.log("ready!")
+              const result =  writeContract({
+                  abi,
+                  address: '0xd7407D2DfE8743E116f264031EC0bC790f55dBfD',
+                  functionName: 'createTrade',
+                  args: [
+                      buyerAddress, tokenDetails
+                  ],
+              })
+
+              console.log(result)
+
+              navigate(ROUTE_PATH.ESCROW_LIST);
+          }
+          }>Create Trade</CreateTradeButton>
         </Form>
       </Wrapper>
     </>

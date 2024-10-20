@@ -19,8 +19,8 @@ const LogoTopBar = () => {
         <p>Baldr</p>
       </div>
       <DynamicWagmiConnector>
-            <DynamicWidget />
-          </DynamicWagmiConnector>
+        <DynamicWidget />
+      </DynamicWagmiConnector>
     </Wrapper>
   );
 };

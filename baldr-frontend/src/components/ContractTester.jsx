@@ -10,8 +10,6 @@ const tmpTokenDetails = [
         tokenId: 0,
         amount: 1,
         price: 2,
-
-
     }
 ]
 
@@ -27,7 +25,7 @@ export default function App() {
                     console.log('hello')
                     const result =  writeContract({
                         abi,
-                        address: '0x9F3D6c3ff075c457fbC196d77548d86487C535E9',
+                        address: '0x2da2d32ecdcb7c89b0fc435625b1052cddae2d5e',
                         functionName: 'createTrade',
                         args: [
                             myAddress, tmpTokenDetails
@@ -35,9 +33,7 @@ export default function App() {
                     })
 
                     console.log(result)
-                }
-
-                }
+                }}
             >
                 Transfer
             </button>
