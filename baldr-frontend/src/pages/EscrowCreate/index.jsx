@@ -5,12 +5,12 @@ import { MY_WALLET_ADDRESS, ROUTE_PATH } from "../../common/const";
 import { truncateText } from "../../common/commons";
 import LogoTopBar from "../../components/LogoTopBar";
 import { createTrade } from "../../utils";
-import { useWriteContract } from 'wagmi'
+import { useWriteContract } from "wagmi";
 
 const EscrowCreatePage = () => {
   const navigate = useNavigate();
 
-  const { writeContract } = useWriteContract()
+  const { writeContract } = useWriteContract();
 
   const [formData, setFormData] = useState({
     game: "Maple Story",
@@ -18,8 +18,8 @@ const EscrowCreatePage = () => {
     nftContractAddress: "0xcf7c359ff84e540f",
     buyerAddress: "",
     tokenId: 99,
-    price: 1,
-    amount: 1,
+    price: 0,
+    amount: 0,
   });
 
   const handleInputChange = (e) => {
@@ -45,11 +45,10 @@ const EscrowCreatePage = () => {
     //     ],
     // })
 
-    console.log(buyerAddress, tokenDetails)
+    console.log(buyerAddress, tokenDetails);
 
     navigate(ROUTE_PATH.ESCROW_LIST);
   };
-
 
   return (
     <>
@@ -81,22 +80,10 @@ const EscrowCreatePage = () => {
           />
 
           <Label>Price</Label>
-          <Input
-            type="text"
-            name="price"
-            value={formData.price}
-            onChange={handleInputChange}
-            placeholder="Price"
-          />
+          <Input type="text" name="price" onChange={handleInputChange} placeholder="Price" />
 
           <Label>Amount</Label>
-          <Input
-            type="text"
-            name="amount"
-            value={formData.amount}
-            onChange={handleInputChange}
-            placeholder="Amount"
-          />
+          <Input type="text" name="amount" onChange={handleInputChange} placeholder="Amount" />
 
           <CreateTradeButton onClick={handleCreateTrade}>Create Trade</CreateTradeButton>
         </Form>

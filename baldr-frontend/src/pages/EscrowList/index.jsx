@@ -117,7 +117,7 @@ const EscrowListPage = () => {
       <Wrapper className="big-pd">
         {/* Select Game Section */}
         <GameSelection className="f-row f-spb vc">
-          <GameLabel>Game:</GameLabel>
+          <GameLabel>Game</GameLabel>
           <GameSelect value={selectedGame} onChange={handleGameChange}>
             <option value="Maple Story">Maple Story (0x4ce2d015...)</option>
             <option value="League of Legends">League of Legends (0xa42b0cde...)</option>

@@ -21,9 +21,9 @@ const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
   }, []);
 
   function fetchAIData() {
-    setRepScore(70);
+    setRepScore(65);
     setRepComment(
-      `s of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular duri`
+      `His transaction history is less than 5 times. Less than 2 weeks since he created his wallet. Be careful with your transaction.`
     );
   }
 
@@ -34,7 +34,7 @@ const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
   const handleDeposit = () => {
     alert("Deposit");
 
-    console.log('tradeData', tradeData);
+    console.log("tradeData", tradeData);
 
     const tradeId = tradeData.tradeId;
     const tokenIds = [tradeData.tokenId];
@@ -50,7 +50,7 @@ const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
     //     ],
     // })
 
-    console.log(tradeId, tokenIds, amounts, user)
+    console.log(tradeId, tokenIds, amounts, user);
   };
 
   const handleConfirm = () => {
@@ -67,12 +67,12 @@ const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
     //     ],
     // })
 
-    console.log(tradeId)
+    console.log(tradeId);
   };
 
   return (
     <>
-      <LogoTopBar/>
+      <LogoTopBar />
 
       <Wrapper className="f-col">
         <p id="page-title">Trade</p>
@@ -120,7 +120,7 @@ const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
           <img src={BaldrGood} />
           <div className="f-col">
             <p id="title">Reputation Score: {repScore}</p>
-            <p>{truncateText(repComment, 70)}</p>
+            <p>{truncateText(repComment, 90)}</p>
           </div>
         </div>
 
