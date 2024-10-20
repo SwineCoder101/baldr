@@ -16,8 +16,10 @@ import {
 import { WagmiProvider } from 'wagmi';
 import {
   mainnet,
- 
-  polygonAmoy
+  baseSepolia,
+  polygonAmoy,
+  flowTestnet,
+  skaleNebulaTestnet
 } from 'wagmi/chains';
 import {
   QueryClientProvider,
@@ -30,7 +32,7 @@ import {
 const config = getDefaultConfig({
   appName: 'baldr',
   projectId: 'fc8b5ed20be8c39819928d4a45318f7e',
-  chains: [mainnet, polygonAmoy],
+  chains: [mainnet, flowTestnet,polygonAmoy,baseSepolia,skaleNebulaTestnet],
   ssr: false, // If your dApp uses server side rendering (SSR)
 });
 
