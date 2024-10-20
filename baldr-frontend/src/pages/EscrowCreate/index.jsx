@@ -45,9 +45,27 @@ const EscrowCreatePage = () => {
     //     ],
     // })
 
-    console.log(buyerAddress, tokenDetails);
+    // console.log(buyerAddress, tokenDetails);
 
-    navigate(ROUTE_PATH.ESCROW_LIST);
+    console.log(formData);
+
+    // escrow/:escrowCount/:sellerAddress/:buyerAddress
+    const url = `/escrow/99/${formData.sellerAddress}/${formData.buyerAddress}`;
+    const request = {
+      tradeId: 99,
+      tokenId: formData.tokenId,
+      sender: "JamJam",
+      price: formData.price,
+      quantity: formData.amount,
+      date: "20/10/2024 - 07:30am",
+      item: "Sword of Power",
+      contractAddress: formData.nftContractAddress,
+      walletAddress: formData.sellerAddress,
+      trustScore: 65, // Trust score out of 100
+      status: "Processing",
+    };
+    navigate(url, { state: { request } });
+    // navigate(ROUTE_PATH.ESCROW_LIST);
   };
 
   return (
