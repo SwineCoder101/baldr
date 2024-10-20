@@ -10,7 +10,7 @@ import DotOffIcon from "../../assets/icons/blue-dot-off.png";
 import EtcIcon from "../../assets/icons/etc.png";
 import { truncateText } from "../../common/commons";
 import { useEffect, useState } from "react";
-import SubTopBar from "../../components/SubTopBar";
+import LogoTopBar from "../../components/LogoTopBar";
 
 const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
   const [repScore, setRepScore] = useState(0);
@@ -33,15 +33,46 @@ const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
 
   const handleDeposit = () => {
     alert("Deposit");
+
+    console.log('tradeData', tradeData);
+
+    const tradeId = tradeData.tradeId;
+    const tokenIds = [tradeData.tokenId];
+    const amounts = [tradeData.quantity];
+    const user = 0; // Enum.buyer == 0
+
+    // const result = writeContract({
+    //     abi,
+    //     address: '0x2da2d32ecdcb7c89b0fc435625b1052cddae2d5e',
+    //     functionName: 'deposit',
+    //     args: [
+    //       tradeId, tokenIds, amounts, user
+    //     ],
+    // })
+
+    console.log(tradeId, tokenIds, amounts, user)
   };
 
   const handleConfirm = () => {
     alert("Confirm");
+
+    const tradeId = tradeData.tradeId;
+
+    // const result = writeContract({
+    //     abi,
+    //     address: '0x2da2d32ecdcb7c89b0fc435625b1052cddae2d5e',
+    //     functionName: 'confirmTrade',
+    //     args: [
+    //       tradeId
+    //     ],
+    // })
+
+    console.log(tradeId)
   };
 
   return (
     <>
-      <SubTopBar />
+      <LogoTopBar/>
 
       <Wrapper className="f-col">
         <p id="page-title">Trade</p>
