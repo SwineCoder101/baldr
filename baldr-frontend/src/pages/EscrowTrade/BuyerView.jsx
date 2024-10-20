@@ -10,7 +10,7 @@ import DotOffIcon from "../../assets/icons/blue-dot-off.png";
 import EtcIcon from "../../assets/icons/etc.png";
 import { truncateText } from "../../common/commons";
 import { useEffect, useState } from "react";
-import SubTopBar from "../../components/SubTopBar";
+import LogoTopBar from "../../components/LogoTopBar";
 
 const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
   const [repScore, setRepScore] = useState(0);
@@ -41,7 +41,7 @@ const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
 
   return (
     <>
-      <SubTopBar />
+      <LogoTopBar/>
 
       <Wrapper className="f-col">
         <p id="page-title">Trade</p>

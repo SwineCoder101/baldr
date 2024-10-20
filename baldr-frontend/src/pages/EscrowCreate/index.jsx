@@ -1,21 +1,25 @@
 import { Wrapper, Form, Label, Input, CreateTradeButton } from "./style";
-import SubTopBar from "../../components/SubTopBar";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MY_WALLET_ADDRESS, ROUTE_PATH } from "../../common/const";
 import { truncateText } from "../../common/commons";
+import LogoTopBar from "../../components/LogoTopBar";
+import { createTrade } from "../../utils";
+import { useWriteContract } from 'wagmi'
 
 const EscrowCreatePage = () => {
   const navigate = useNavigate();
+
+  const { writeContract } = useWriteContract()
 
   const [formData, setFormData] = useState({
     game: "Maple Story",
     sellerAddress: MY_WALLET_ADDRESS,
     nftContractAddress: "0xcf7c359ff84e540f",
-    nftTokenId: "NFT_TOKEN_ID",
     buyerAddress: "",
-    price: "",
-    amount: "",
+    tokenId: 99,
+    price: 1,
+    amount: 1,
   });
 
   const handleInputChange = (e) => {
@@ -24,14 +28,32 @@ const EscrowCreatePage = () => {
   };
 
   const handleCreateTrade = () => {
-    console.log("Trade Data:", formData);
-    alert("Trade");
+    console.log("create Trade");
+    const buyerAddress = formData.buyerAddress;
+    const tokenDetails = {
+      tokenId: formData.tokenId,
+      amount: formData.amount,
+      price: formData.price,
+    };
+
+    // const result = writeContract({
+    //     abi,
+    //     address: '0x2da2d32ecdcb7c89b0fc435625b1052cddae2d5e',
+    //     functionName: 'createTrade',
+    //     args: [
+    //       buyerAddress, tokenDetails
+    //     ],
+    // })
+
+    console.log(buyerAddress, tokenDetails)
+
     navigate(ROUTE_PATH.ESCROW_LIST);
   };
 
+
   return (
     <>
-      <SubTopBar />
+      <LogoTopBar />
 
       <Wrapper>
         <div id="title">Create Escrow</div>
@@ -47,7 +69,7 @@ const EscrowCreatePage = () => {
           <Input type="text" value={formData.nftContractAddress} readOnly />
 
           <Label>NFT Token ID</Label>
-          <Input type="text" name="nftTokenId" value={formData.nftTokenId} readOnly />
+          <Input type="text" name="nftTokenId" value={formData.tokenId} readOnly />
 
           <Label>Buyer Address</Label>
           <Input
