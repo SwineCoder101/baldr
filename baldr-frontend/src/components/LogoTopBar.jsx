@@ -1,7 +1,13 @@
 import styled from "styled-components";
 import theme from "../styles/theme";
 import Baldr from "../assets/image/baldr.png";
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+
+import {
+  
+  DynamicWidget,
+} from "@dynamic-labs/sdk-react-core";
+import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
+
 
 
 
@@ -12,7 +18,9 @@ const LogoTopBar = () => {
         <img id="logo" src={Baldr} />
         <p>Baldr</p>
       </div>
-      <ConnectButton />
+      <DynamicWagmiConnector>
+            <DynamicWidget />
+          </DynamicWagmiConnector>
     </Wrapper>
   );
 };
