@@ -3,8 +3,8 @@
 import styled from "styled-components";
 import theme from "../../styles/theme";
 import BaldrGood from "../../assets/image/baldr-good.png";
-import TradeView from "../../assets/image/tmp-trade.png";
 import RefreshIcon from "../../assets/icons/refresh.png";
+import TradeIcon from "../../assets/icons/trade-white.png";
 import { truncateText } from "../../common/commons";
 import { useEffect, useState } from "react";
 
@@ -77,7 +77,28 @@ const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
           <p id="title">Trade</p>
           <img id="r-icon" src={RefreshIcon} />
         </div>
-        <img id="t-img" src={TradeView} />
+
+        {/* Trade Curr Box */}
+        <div style={{ marginTop: "1.4rem" }}>
+          {/* Item Seller */}
+          <div className="t-box">
+            {tradeData.item} x {tradeData.quantity}
+          </div>
+
+          <div className="hc">
+            <img id="t-icon" src={TradeIcon} />
+          </div>
+
+          <div className="f-col" style={{ gap: "0.4rem" }}>
+            <div id="me-box" className="f-col">
+              {tradeData.price}
+            </div>
+            <p className="hc" style={{ color: theme.color.MAIN_BLUE, fontSize: "1.8rem" }}>
+              Me
+            </p>
+          </div>
+        </div>
+
         <div id="dps-btn">Deposit Coin</div>
       </div>
 
@@ -112,11 +133,30 @@ const Wrapper = styled.div`
 
   #trade-box {
     border-radius: 0.6rem;
-    padding: 1.2rem;
+    padding: 1.6rem;
     background-color: ${theme.color.BACK_BLACK};
     color: ${theme.color.WHITE};
     font-size: ${theme.font.SIZE.M};
     gap: 1rem;
+
+    #t-icon {
+      width: 2.6rem;
+      rotate: 90deg;
+      margin: 1.4rem 0;
+    }
+
+    #me-box {
+      padding: 1.2rem;
+      border-radius: 0.6rem;
+      background-color: ${theme.color.BACK_GRAY};
+      border: 3px solid ${theme.color.MAIN_BLUE};
+    }
+
+    .t-box {
+      background-color: ${theme.color.BACK_GRAY};
+      padding: 1.2rem;
+      border-radius: 0.6rem;
+    }
 
     #title {
       font-size: ${theme.font.SIZE.ML};
@@ -130,9 +170,11 @@ const Wrapper = styled.div`
     #dps-btn {
       background-color: ${theme.color.BACK_BLUE};
       color: ${theme.color.TEXT_BLUE};
-      padding: 0.8rem;
+      padding: 1.2rem;
+      font-size: 1.4rem;
       text-align: center;
       border-radius: 0.6rem;
+      margin-top: 2rem;
     }
   }
 
@@ -141,24 +183,25 @@ const Wrapper = styled.div`
     background-color: ${theme.color.BACK_PURPLE};
     font-size: ${theme.font.SIZE.S};
     color: ${theme.color.TEXT_GRAY};
-    padding: 1.4rem;
+    padding: 1.2rem 1.4rem;
 
     img {
       width: 5rem;
       height: 5rem;
       border-radius: 1rem;
-      margin-right: 1rem;
+      margin-right: 1.4rem;
     }
 
     #title {
       color: ${theme.color.TEXT_PURPLE};
       margin-bottom: 0.6rem;
+      font-size: 1.4rem;
     }
   }
 
   #info-box {
     border-radius: 0.6rem;
-    padding: 1.2rem;
+    padding: 1.6rem;
     background-color: ${theme.color.BACK_BLACK};
     color: ${theme.color.WHITE};
     font-size: ${theme.font.SIZE.M};
