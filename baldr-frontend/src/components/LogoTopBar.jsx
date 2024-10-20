@@ -33,6 +33,7 @@ const Wrapper = styled.div`
       width: 3.4rem;
       height: 3.4rem;
       margin-right: 1rem;
+      border-radius: 0.4rem;
     }
   }
 `;

@@ -1,16 +1,16 @@
 import { Wrapper, Form, Label, Input, CreateTradeButton } from "./style";
-import LogoTopBar from "../../components/LogoTopBar";
-import BottomNavBar from "../../components/BottomNavBar";
+import SubTopBar from "../../components/SubTopBar";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ROUTE_PATH } from "../../common/const";
+import { MY_WALLET_ADDRESS, ROUTE_PATH } from "../../common/const";
+import { truncateText } from "../../common/commons";
 
 const EscrowCreatePage = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     game: "Maple Story",
-    sellerAddress: "0xa63e4f21a7ce5a96",
+    sellerAddress: MY_WALLET_ADDRESS,
     nftContractAddress: "0xcf7c359ff84e540f",
     nftTokenId: "NFT_TOKEN_ID",
     buyerAddress: "",
@@ -25,20 +25,23 @@ const EscrowCreatePage = () => {
 
   const handleCreateTrade = () => {
     console.log("Trade Data:", formData);
+    alert("Trade");
     navigate(ROUTE_PATH.ESCROW_LIST);
   };
 
   return (
     <>
-      <LogoTopBar />
+      <SubTopBar />
 
       <Wrapper>
+        <div id="title">Create Escrow</div>
+
         <Form>
           <Label>Game</Label>
           <Input type="text" value={formData.game} readOnly />
 
           <Label>Seller Address</Label>
-          <Input type="text" value={formData.sellerAddress} readOnly />
+          <Input type="text" value={truncateText(formData.sellerAddress, 24)} readOnly />
 
           <Label>NFT Contract Address</Label>
           <Input type="text" value={formData.nftContractAddress} readOnly />
@@ -52,19 +55,30 @@ const EscrowCreatePage = () => {
             name="buyerAddress"
             value={formData.buyerAddress}
             onChange={handleInputChange}
+            placeholder="Your Wallet Addres"
           />
 
           <Label>Price</Label>
-          <Input type="text" name="price" value={formData.price} onChange={handleInputChange} />
+          <Input
+            type="text"
+            name="price"
+            value={formData.price}
+            onChange={handleInputChange}
+            placeholder="Price"
+          />
 
           <Label>Amount</Label>
-          <Input type="text" name="amount" value={formData.amount} onChange={handleInputChange} />
+          <Input
+            type="text"
+            name="amount"
+            value={formData.amount}
+            onChange={handleInputChange}
+            placeholder="Amount"
+          />
 
           <CreateTradeButton onClick={handleCreateTrade}>Create Trade</CreateTradeButton>
         </Form>
       </Wrapper>
-
-      <BottomNavBar />
     </>
   );
 };

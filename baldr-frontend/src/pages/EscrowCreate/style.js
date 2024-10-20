@@ -7,7 +7,12 @@ export const Wrapper = styled.div`
   font-size: ${theme.font.SIZE.ML};
   font-weight: 600;
   min-height: 100vh;
-  padding: 7rem 2rem 2rem 2rem;
+  padding: 6rem 2rem 2rem 2rem;
+
+  #title {
+    font-size: 2rem;
+    margin: 1rem 0;
+  }
 `;
 
 export const Form = styled.div`
@@ -16,7 +21,7 @@ export const Form = styled.div`
   flex-direction: column;
   gap: 0.6rem;
   border-radius: 1rem;
-  margin-bottom: 10rem;
+  margin-bottom: 6rem;
 `;
 
 export const Label = styled.label`
