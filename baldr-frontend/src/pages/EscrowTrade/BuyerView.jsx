@@ -5,6 +5,9 @@ import theme from "../../styles/theme";
 import BaldrGood from "../../assets/image/baldr-good.png";
 import RefreshIcon from "../../assets/icons/refresh.png";
 import TradeIcon from "../../assets/icons/trade-white.png";
+import DotOnIcon from "../../assets/icons/blue-dot-on.png";
+import DotOffIcon from "../../assets/icons/blue-dot-off.png";
+import EtcIcon from "../../assets/icons/etc.png";
 import { truncateText } from "../../common/commons";
 import { useEffect, useState } from "react";
 
@@ -78,6 +81,35 @@ const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
           <img id="r-icon" src={RefreshIcon} />
         </div>
 
+        <div id="t-map" className="f-row f-spb vc">
+          <div className="f-col hc" style={{ gap: ".8rem" }}>
+            <div className="f-row hc" style={{ gap: ".6rem" }}>
+              <img src={DotOnIcon} />
+              <img src={DotOffIcon} />
+            </div>
+            <p>Deposit</p>
+          </div>
+
+          <img className="etc" src={EtcIcon} />
+
+          <div className="f-col hc" style={{ gap: ".8rem" }}>
+            <div className="f-row hc" style={{ gap: ".6rem" }}>
+              <img src={DotOffIcon} />
+              <img src={DotOffIcon} />
+            </div>
+            <p>Confirm</p>
+          </div>
+
+          <img className="etc" src={EtcIcon} />
+
+          <div className="f-col hc" style={{ gap: ".6rem" }}>
+            <div>
+              <img src={DotOffIcon} />
+            </div>
+            <p>Done</p>
+          </div>
+        </div>
+
         {/* Trade Curr Box */}
         <div style={{ marginTop: "1.4rem" }}>
           {/* Item Seller */}
@@ -138,6 +170,18 @@ const Wrapper = styled.div`
     color: ${theme.color.WHITE};
     font-size: ${theme.font.SIZE.M};
     gap: 1rem;
+
+    #t-map {
+      margin: 2.4rem 0;
+
+      p {
+        color: ${theme.color.TEXT_GRAY};
+      }
+
+      .etc {
+        height: 0.6rem;
+      }
+    }
 
     #t-icon {
       width: 2.6rem;
