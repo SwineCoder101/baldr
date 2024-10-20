@@ -10,14 +10,14 @@ contract IntegrationScript is Script {
     Escrow public escrow;
     Token public token;
 
-    address public constant BUYER = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8; // Anvil Account 1
+    address public constant DEPLOYER = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8; // Anvil Account 1
     address public constant SELLER = 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC; // Anvil Account 2
+    address public constant BUYER = 0x90F79bf6EB2c4f870365E785982E1f101E93b906; // Anvil Account 3
 
-    address public constant DEPLOYER = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266; // Deployer address
     uint256 public constant TRADE_ID = 1;
 
     function run() external {
-        uint256 deployerPrivateKey = 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80;
+        uint256 deployerPrivateKey = 0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d;
 
         deployContracts(deployerPrivateKey);
         approveEscrow(sellerPrivateKey());
@@ -56,7 +56,7 @@ contract IntegrationScript is Script {
     function createTrade(uint256 sellerKey) internal {
         vm.startBroadcast(sellerKey);
         Escrow.TokenDetails[] memory tokenDetails = new Escrow.TokenDetails[](1);
-        tokenDetails[0] = Escrow.TokenDetails(1, 100, 1 ether);
+        tokenDetails[0] = Escrow.TokenDetails(1, 100, 100 wei);
         escrow.createTrade(BUYER, tokenDetails);
         console.log("[Trade Creation] Trade created by seller for buyer with trade ID:", TRADE_ID);
         vm.stopBroadcast();
@@ -68,7 +68,7 @@ contract IntegrationScript is Script {
         uint256[] memory sellerAmounts = new uint256[](1);
         sellerTokenIds[0] = 1;
         sellerAmounts[0] = 100;
-        escrow.deposit{value: 1 ether}(TRADE_ID, sellerTokenIds, sellerAmounts, Escrow.User.Seller);
+        escrow.deposit(TRADE_ID, sellerTokenIds, sellerAmounts, Escrow.User.Seller);
         console.log("[Deposit] Seller deposited tokens for trade ID:", TRADE_ID);
         vm.stopBroadcast();
     }
@@ -79,24 +79,24 @@ contract IntegrationScript is Script {
         uint256[] memory amounts = new uint256[](1);
         tokenIds[0] = 1;
         amounts[0] = 100;
-        escrow.deposit{value: 1 ether}(TRADE_ID, tokenIds, amounts, Escrow.User.Buyer);
+        escrow.deposit{value: 100 wei}(TRADE_ID, tokenIds, amounts, Escrow.User.Buyer);
         console.log("[Deposit] Buyer deposited tokens for trade ID:", TRADE_ID);
         vm.stopBroadcast();
     }
 
-    function confirmTrade(uint256 sellerKey) internal {
-        vm.startBroadcast(sellerKey);
+    function confirmTrade(uint256 userKey) internal {
+        vm.startBroadcast(userKey);
         escrow.confirmTrade(TRADE_ID);
         console.log("[Confirmation] User confirmed trade ID:", TRADE_ID);
         vm.stopBroadcast();
     }
 
     function sellerPrivateKey() internal pure returns (uint256) {
-        return 0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a;
+        return 0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d;
     }
 
     function buyerPrivateKey() internal pure returns (uint256) {
-        return 0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d;
+        return 0x7c852118294e51e653712a81e05800f419141751be58f605c371e15141b007a6;
     }
 }
 
