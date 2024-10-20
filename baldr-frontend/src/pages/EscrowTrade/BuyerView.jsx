@@ -54,7 +54,20 @@ const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
   };
 
   const handleConfirm = () => {
-    alert("Confirm");    
+    alert("Confirm");
+
+    const tradeId = tradeData.tradeId;
+
+    // const result = writeContract({
+    //     abi,
+    //     address: '0x2da2d32ecdcb7c89b0fc435625b1052cddae2d5e',
+    //     functionName: 'confirmTrade',
+    //     args: [
+    //       tradeId
+    //     ],
+    // })
+
+    console.log(tradeId)
   };
 
   return (

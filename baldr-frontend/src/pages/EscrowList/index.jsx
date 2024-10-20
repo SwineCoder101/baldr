@@ -24,7 +24,7 @@ import BottomNavBar from "../../components/BottomNavBar";
 // Sample data for escrow requests
 const escrowRequests = [
   {
-    tradeId: 0,
+    tradeId: 1,
     tokenId: 2,
     sender: "Louis",
     price: "$100",
@@ -37,7 +37,7 @@ const escrowRequests = [
     status: "Processing",
   },
   {
-    tradeId: 1,
+    tradeId: 2,
     tokenId: 2,
     sender: "NotScammer",
     price: "$200",
@@ -50,7 +50,7 @@ const escrowRequests = [
     status: "Processing",
   },
   {
-    tradeId: 2,
+    tradeId: 3,
     tokenId: 2,
     sender: "DuckDuck",
     price: "$750",
@@ -63,7 +63,7 @@ const escrowRequests = [
     status: "Done",
   },
   {
-    tradeId: 3,
+    tradeId: 4,
     tokenId: 2,
     sender: "JamJam",
     price: "$150",
