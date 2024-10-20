@@ -18,7 +18,7 @@ contract TokenScript is Script {
         vm.startBroadcast(deployerPrivateKey);
 
         token = new Token(DEPLOYER);
-        escrow = new Escrow(DEPLOYER,address(token));
+        escrow = new Escrow(DEPLOYER,address(token),0x4e4af2a21ebf62850fD99Eb6253E1eFBb56098cD);
 
         vm.stopBroadcast();
     }

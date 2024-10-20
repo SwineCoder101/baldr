@@ -35,7 +35,7 @@ contract IntegrationScript is Script {
         console.log("[Deployment] Token contract deployed at address:", address(token));
 
         // Deploy the Escrow contract with the correct parameters
-        escrow = new Escrow(DEPLOYER, address(token));
+        escrow = new Escrow(DEPLOYER, address(token),0x4e4af2a21ebf62850fD99Eb6253E1eFBb56098cD);
         console.log("[Deployment] Escrow contract deployed at address:", address(escrow));
 
         // Mint tokens to the seller to ensure they have enough balance
