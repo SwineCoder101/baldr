@@ -52,7 +52,7 @@ const Wrapper = styled.div`
   width: 100%;
 
   img {
-    width: 3rem;
+    width: 2.4rem;
   }
 
   p {

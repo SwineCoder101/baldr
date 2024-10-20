@@ -44,6 +44,8 @@ const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
       <SubTopBar />
 
       <Wrapper className="f-col">
+        <p id="page-title">Trade</p>
+
         {/* Select Game Section */}
         <GameSelection className="f-row f-spb">
           <GameLabel>Game:</GameLabel>
@@ -161,13 +163,18 @@ const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
 };
 
 const Wrapper = styled.div`
-  padding-top: 7rem !important;
+  padding-top: 6rem !important;
   padding: 2rem;
   background-color: ${theme.color.MAIN_BLACK};
   color: ${theme.color.WHITE};
   font-weight: 600;
   min-height: 100vh;
   gap: 1.8rem;
+
+  #page-title {
+    font-size: 2rem;
+    margin: 1rem 0 0 0;
+  }
 
   #r-icon {
     width: 3rem;
