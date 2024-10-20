@@ -10,6 +10,7 @@ import DotOffIcon from "../../assets/icons/blue-dot-off.png";
 import EtcIcon from "../../assets/icons/etc.png";
 import { truncateText } from "../../common/commons";
 import { useEffect, useState } from "react";
+import SubTopBar from "../../components/SubTopBar";
 
 const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
   const [repScore, setRepScore] = useState(0);
@@ -26,121 +27,141 @@ const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
     );
   }
 
+  const handleFetch = () => {
+    alert("Fetch");
+  };
+
+  const handleDeposit = () => {
+    alert("Deposit");
+  };
+
+  const handleConfirm = () => {
+    alert("Confirm");
+  };
+
   return (
-    <Wrapper className="f-col">
-      {/* Select Game Section */}
-      <GameSelection className="f-row f-spb">
-        <GameLabel>Game:</GameLabel>
-        <GameSelect>Maple Story (0x4ce2d015...)</GameSelect>
-      </GameSelection>
+    <>
+      <SubTopBar />
 
-      <div id="info-box" className="f-col">
-        <div className="f-row f-spb">
-          <label>Contract:</label>
-          <p>{truncateText(tradeData.contractAddress, 20)}</p>
-        </div>
-        <div className="f-row f-spb">
-          <label>Token ID:</label>
-          <p>{tradeData.tokenId}</p>
-        </div>
-        <div className="f-row f-spb">
-          <label>From:</label>
-          <p>{tradeData.sender}</p>
-        </div>
-        <div className="f-row f-spb">
-          <label>Wallet:</label>
-          <p>{truncateText(tradeData.walletAddress, 20)}</p>
-        </div>
-        <div className="f-row f-spb">
-          <label>When:</label>
-          <p>{tradeData.date}</p>
-        </div>
-        <div className="f-row f-spb">
-          <label>Item:</label>
-          <p>
-            {tradeData.item} x {tradeData.quantity}
-          </p>
-        </div>
-        <div className="f-row f-spb">
-          <label>Price:</label>
-          <p>{tradeData.price}</p>
-        </div>
-      </div>
+      <Wrapper className="f-col">
+        {/* Select Game Section */}
+        <GameSelection className="f-row f-spb">
+          <GameLabel>Game:</GameLabel>
+          <GameSelect>Maple Story (0x4ce2d015...)</GameSelect>
+        </GameSelection>
 
-      <div id="rep-box" className="f-row">
-        <img src={BaldrGood} />
-        <div className="f-col">
-          <p id="title">Reputation Score: {repScore}</p>
-          <p>{truncateText(repComment, 70)}</p>
-        </div>
-      </div>
-
-      <div id="trade-box">
-        <div className="f-row f-spb vc">
-          <p id="title">Trade</p>
-          <img id="r-icon" src={RefreshIcon} />
-        </div>
-
-        <div id="t-map" className="f-row f-spb vc">
-          <div className="f-col hc" style={{ gap: ".8rem" }}>
-            <div className="f-row hc" style={{ gap: ".6rem" }}>
-              <img src={DotOnIcon} />
-              <img src={DotOffIcon} />
-            </div>
-            <p>Deposit</p>
+        <div id="info-box" className="f-col">
+          <div className="f-row f-spb">
+            <label>Contract:</label>
+            <p>{truncateText(tradeData.contractAddress, 20)}</p>
           </div>
-
-          <img className="etc" src={EtcIcon} />
-
-          <div className="f-col hc" style={{ gap: ".8rem" }}>
-            <div className="f-row hc" style={{ gap: ".6rem" }}>
-              <img src={DotOffIcon} />
-              <img src={DotOffIcon} />
-            </div>
-            <p>Confirm</p>
+          <div className="f-row f-spb">
+            <label>Token ID:</label>
+            <p>{tradeData.tokenId}</p>
           </div>
-
-          <img className="etc" src={EtcIcon} />
-
-          <div className="f-col hc" style={{ gap: ".6rem" }}>
-            <div>
-              <img src={DotOffIcon} />
-            </div>
-            <p>Done</p>
+          <div className="f-row f-spb">
+            <label>From:</label>
+            <p>{tradeData.sender}</p>
           </div>
-        </div>
-
-        {/* Trade Curr Box */}
-        <div style={{ marginTop: "1.4rem" }}>
-          {/* Item Seller */}
-          <div className="t-box">
-            {tradeData.item} x {tradeData.quantity}
+          <div className="f-row f-spb">
+            <label>Wallet:</label>
+            <p>{truncateText(tradeData.walletAddress, 20)}</p>
           </div>
-
-          <div className="hc">
-            <img id="t-icon" src={TradeIcon} />
+          <div className="f-row f-spb">
+            <label>When:</label>
+            <p>{tradeData.date}</p>
           </div>
-
-          <div className="f-col" style={{ gap: "0.4rem" }}>
-            <div id="me-box" className="f-col">
-              {tradeData.price}
-            </div>
-            <p className="hc" style={{ color: theme.color.MAIN_BLUE, fontSize: "1.8rem" }}>
-              Me
+          <div className="f-row f-spb">
+            <label>Item:</label>
+            <p>
+              {tradeData.item} x {tradeData.quantity}
             </p>
           </div>
+          <div className="f-row f-spb">
+            <label>Price:</label>
+            <p>{tradeData.price}</p>
+          </div>
         </div>
 
-        <div id="dps-btn">Deposit Coin</div>
-      </div>
+        <div id="rep-box" className="f-row">
+          <img src={BaldrGood} />
+          <div className="f-col">
+            <p id="title">Reputation Score: {repScore}</p>
+            <p>{truncateText(repComment, 70)}</p>
+          </div>
+        </div>
 
-      <div id="cfm-btn">Confirm Trade</div>
-    </Wrapper>
+        <div id="trade-box">
+          <div className="f-row f-spb vc">
+            <p id="title">Trade</p>
+            <img id="r-icon" src={RefreshIcon} onClick={() => handleFetch()} />
+          </div>
+
+          <div id="t-map" className="f-row f-spb vc">
+            <div className="f-col hc" style={{ gap: ".8rem" }}>
+              <div className="f-row hc" style={{ gap: ".6rem" }}>
+                <img src={DotOnIcon} />
+                <img src={DotOffIcon} />
+              </div>
+              <p>Deposit</p>
+            </div>
+
+            <img className="etc" src={EtcIcon} />
+
+            <div className="f-col hc" style={{ gap: ".8rem" }}>
+              <div className="f-row hc" style={{ gap: ".6rem" }}>
+                <img src={DotOffIcon} />
+                <img src={DotOffIcon} />
+              </div>
+              <p>Confirm</p>
+            </div>
+
+            <img className="etc" src={EtcIcon} />
+
+            <div className="f-col hc" style={{ gap: ".6rem" }}>
+              <div>
+                <img src={DotOffIcon} />
+              </div>
+              <p>Done</p>
+            </div>
+          </div>
+
+          {/* Trade Curr Box */}
+          <div style={{ marginTop: "1.4rem" }}>
+            {/* Item Seller */}
+            <div className="t-box">
+              {tradeData.item} x {tradeData.quantity}
+            </div>
+
+            <div className="hc">
+              <img id="t-icon" src={TradeIcon} />
+            </div>
+
+            <div className="f-col" style={{ gap: "0.4rem" }}>
+              <div id="me-box" className="f-col">
+                {tradeData.price}
+              </div>
+              <p className="hc" style={{ color: theme.color.MAIN_BLUE, fontSize: "1.8rem" }}>
+                Me
+              </p>
+            </div>
+          </div>
+
+          <div id="dps-btn" onClick={() => handleDeposit()}>
+            Deposit Coin
+          </div>
+        </div>
+
+        <div id="cfm-btn" onClick={() => handleConfirm()}>
+          Confirm Trade
+        </div>
+      </Wrapper>
+    </>
   );
 };
 
 const Wrapper = styled.div`
-  padding-top: 8rem !important;
+  padding-top: 7rem !important;
   padding: 2rem;
   background-color: ${theme.color.MAIN_BLACK};
   color: ${theme.color.WHITE};
@@ -160,7 +181,7 @@ const Wrapper = styled.div`
     padding: 1rem;
     text-align: center;
     border-radius: 0.6rem;
-    margin-bottom: 8rem;
+    margin-bottom: 6rem;
   }
 
   #trade-box {
