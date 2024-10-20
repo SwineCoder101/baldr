@@ -44,8 +44,6 @@ const EscrowTradePage = () => {
 
   return (
     <>
-      <LogoTopBar />
-
       <Wrapper>
         {isSeller && (
           <SellerView
@@ -62,8 +60,6 @@ const EscrowTradePage = () => {
           />
         )}
       </Wrapper>
-
-      <BottomNavBar />
     </>
   );
 };
