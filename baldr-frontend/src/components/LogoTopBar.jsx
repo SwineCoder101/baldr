@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import theme from "../styles/theme";
-import Logo from "../assets/image/logo.png";
+import Logo from "../assets/image/opening-logo.png";
 
 import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
 import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
