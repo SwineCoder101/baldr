@@ -48,6 +48,8 @@ const InventoryPage = () => {
   const handleMenuItemClick = (action) => {
     if (action === "Escrow") {
       navigate(ROUTE_PATH.ESCROW_CREATE);
+    } else {
+      alert("Not yet");
     }
   };
 

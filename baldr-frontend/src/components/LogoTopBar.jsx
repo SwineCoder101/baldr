@@ -2,7 +2,7 @@ import styled from "styled-components";
 import theme from "../styles/theme";
 import Baldr from "../assets/image/baldr.png";
 
-import { DynamicWidget } from '@dynamic-labs/sdk-react-core';
+import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
 
 const LogoTopBar = () => {
   return (
@@ -11,7 +11,6 @@ const LogoTopBar = () => {
         <img id="logo" src={Baldr} />
         <p>Baldr</p>
       </div>
-      <div>Wallet</div>
       <DynamicWidget />
     </Wrapper>
   );
@@ -34,6 +33,7 @@ const Wrapper = styled.div`
       width: 3.4rem;
       height: 3.4rem;
       margin-right: 1rem;
+      border-radius: 0.4rem;
     }
   }
 `;

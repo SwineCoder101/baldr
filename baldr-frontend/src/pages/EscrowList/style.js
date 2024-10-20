@@ -22,16 +22,17 @@ export const GameLabel = styled.p`
 `;
 
 export const GameSelect = styled.select`
-  padding: 0.6rem;
+  padding: 0.6rem 0.6rem 0.6rem 1rem;
   color: ${theme.color.TEXT_BLUE};
   background-color: ${theme.color.BACK_BLUE};
+  font-size: ${theme.font.SIZE.S};
   border-radius: 0.4rem;
   border: none;
   outline: none;
   appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 10px center;
+  background-position: right 4px center;
 `;
 
 export const TabNavigation = styled.div`
@@ -59,17 +60,11 @@ export const TradeListView = styled.div`
   margin-top: 2rem;
 `;
 
-export const SendTradeView = styled.div`
-  margin-top: 2rem;
-  text-align: center;
-  color: ${theme.color.WHITE};
-`;
-
 export const SectionHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1rem 1rem 0;
+  padding: 0;
   margin-top: 1rem;
   cursor: pointer;
   border-radius: 6px;
@@ -107,6 +102,7 @@ export const ExpandIcon = styled.div`
 
 export const CollapseWrapper = styled.div`
   display: ${({ open }) => (open ? "block" : "none")};
+  margin-top: 1rem;
 `;
 
 export const TradeCard = styled.div`
