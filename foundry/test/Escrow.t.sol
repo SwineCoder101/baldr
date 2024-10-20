@@ -19,7 +19,7 @@ contract EscrowTest is Test, ERC1155Holder {
         buyer = vm.addr(1);
         seller = vm.addr(2);
         token = new Token(owner);
-        escrow = new Escrow(owner, address(token));
+        escrow = new Escrow(owner, address(token),0x4e4af2a21ebf62850fD99Eb6253E1eFBb56098cD);
 
         // Mint tokens to the seller
         token.mint(seller, 1, 5, "");
