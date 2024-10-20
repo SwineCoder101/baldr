@@ -33,10 +33,28 @@ const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
 
   const handleDeposit = () => {
     alert("Deposit");
+
+    console.log('tradeData', tradeData);
+
+    const tradeId = tradeData.tradeId;
+    const tokenIds = [tradeData.tokenId];
+    const amounts = [tradeData.quantity];
+    const user = 0; // Enum.buyer == 0
+
+    // const result = writeContract({
+    //     abi,
+    //     address: '0x2da2d32ecdcb7c89b0fc435625b1052cddae2d5e',
+    //     functionName: 'deposit',
+    //     args: [
+    //       tradeId, tokenIds, amounts, user
+    //     ],
+    // })
+
+    console.log(tradeId, tokenIds, amounts, user)
   };
 
   const handleConfirm = () => {
-    alert("Confirm");
+    alert("Confirm");    
   };
 
   return (

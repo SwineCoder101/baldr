@@ -24,7 +24,8 @@ import BottomNavBar from "../../components/BottomNavBar";
 // Sample data for escrow requests
 const escrowRequests = [
   {
-    tokenId: 0,
+    tradeId: 0,
+    tokenId: 2,
     sender: "Louis",
     price: "$100",
     quantity: 1,
@@ -36,7 +37,8 @@ const escrowRequests = [
     status: "Processing",
   },
   {
-    tokenId: 1,
+    tradeId: 1,
+    tokenId: 2,
     sender: "NotScammer",
     price: "$200",
     quantity: 2,
@@ -48,6 +50,7 @@ const escrowRequests = [
     status: "Processing",
   },
   {
+    tradeId: 2,
     tokenId: 2,
     sender: "DuckDuck",
     price: "$750",
@@ -60,7 +63,8 @@ const escrowRequests = [
     status: "Done",
   },
   {
-    tokenId: 3,
+    tradeId: 3,
+    tokenId: 2,
     sender: "JamJam",
     price: "$150",
     quantity: 1,
@@ -102,7 +106,7 @@ const EscrowListPage = () => {
 
   const handleTradeClick = (request) => {
     // escrow/:escrowCount/:sellerAddress/:buyerAddress
-    const url = `/escrow/${request.tokenId}/${request.walletAddress}/${MY_WALLET_ADDRESS}`;
+    const url = `/escrow/${request.tradeId}/${request.walletAddress}/${MY_WALLET_ADDRESS}`;
     navigate(url, { state: { request } });
   };
 
