@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@ethsign/sign-protocol-evm": "^1.1.1"
+  }
+}
