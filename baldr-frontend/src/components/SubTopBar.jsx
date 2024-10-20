@@ -1,16 +1,19 @@
 import styled from "styled-components";
 import theme from "../styles/theme";
-import Baldr from "../assets/image/baldr.png";
-
+import BackIcon from "../assets/icons/left-arrow-white.png";
 import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
+import { useNavigate } from "react-router-dom";
 
-const LogoTopBar = () => {
+const SubTopBar = () => {
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   return (
     <Wrapper className="f-row f-spb vc">
-      <div id="title" className="f-row vc">
-        <img id="logo" src={Baldr} />
-        <p>Baldr</p>
-      </div>
+      <img id="b-btn" src={BackIcon} onClick={() => handleGoBack()} />
       <DynamicWidget />
     </Wrapper>
   );
@@ -26,16 +29,9 @@ const Wrapper = styled.div`
   top: 0;
   width: 100%;
 
-  #title {
-    font-weight: bold;
-
-    #logo {
-      width: 3.4rem;
-      height: 3.4rem;
-      margin-right: 1rem;
-      border-radius: 0.4rem;
-    }
+  #b-btn {
+    width: 2rem;
   }
 `;
 
-export default LogoTopBar;
+export default SubTopBar;
