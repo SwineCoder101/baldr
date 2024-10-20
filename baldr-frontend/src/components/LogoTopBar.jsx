@@ -2,6 +2,7 @@ import styled from "styled-components";
 import theme from "../styles/theme";
 import Baldr from "../assets/image/baldr.png";
 
+import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
 import { DynamicWidget } from '@dynamic-labs/sdk-react-core';
 
 const LogoTopBar = () => {
@@ -12,7 +13,11 @@ const LogoTopBar = () => {
         <p>Baldr</p>
       </div>
       <div>Wallet</div>
-      <DynamicWidget />
+      <DynamicWagmiConnector>
+
+        <DynamicWidget />
+      </DynamicWagmiConnector>
+
     </Wrapper>
   );
 };
