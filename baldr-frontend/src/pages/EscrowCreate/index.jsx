@@ -9,7 +9,7 @@ import { fefe } from '../../components/abi'
 
 const EscrowCreatePage = () => {
 
-  const abi = fefe.abi
+  const abi = fefe.abi;
 
   const navigate = useNavigate();
 
@@ -36,16 +36,25 @@ const EscrowCreatePage = () => {
 
   const handleCreateTrade = async () => {
     console.log("create Trade");
-    const buyerAddress = formData.buyerAddress;
+    // const buyerAddress = formData.buyerAddress;
+    // const tokenDetails = {
+    //   tokenId: formData.tokenId,
+    //   amount: formData.amount,
+    //   price: formData.price,
+    // };
+
+    // for test
+    const buyerAddress = '0x0766AA63A1BCE9f8bd24c7Ca476AC78cAc570DD8';
     const tokenDetails = {
-      tokenId: formData.tokenId,
-      amount: formData.amount,
-      price: formData.price,
+      tokenId: 77,
+      amount: 88,
+      price: 99, 
     };
 
     const result = writeContract({
         abi,
         address: '0xca4944605e921f8f92e9b3071f92fc10e2ad3712',
+        // address: '0x98eDDadCfde04dC22a0e62119617e74a6Bc77313',
         functionName: 'createTrade',
         args: [
           buyerAddress, tokenDetails

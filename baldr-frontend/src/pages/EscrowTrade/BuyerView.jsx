@@ -11,10 +11,18 @@ import EtcIcon from "../../assets/icons/etc.png";
 import { truncateText } from "../../common/commons";
 import { useEffect, useState } from "react";
 import LogoTopBar from "../../components/LogoTopBar";
+import { fefe } from "../../components/abi";
+import { useWriteContract } from "wagmi";
+import { parseGwei } from "viem";
 
 const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
   const [repScore, setRepScore] = useState(0);
   const [repComment, setRepComment] = useState(``);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { writeContract } = useWriteContract()
+
+  const abi = fefe.abi;
 
   useEffect(() => {
     fetchAIData();
@@ -30,42 +38,52 @@ const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
   const handleFetch = () => {
     alert("Fetch");
   };
+  const handleDeposit = async () => {
+    if (isSubmitting) return; // 중복 실행 방지
+    setIsSubmitting(true); // 버튼 비활성화
+  
+    // 트랜잭션 처리 로직
+    // const tradeId = Number(tradeData.tradeId);
+    // const tokenIds = [Number(tradeData.tokenId)];
+    // const amounts = [Number(tradeData.quantity)];
+    // const user = Number(0);
 
-  const handleDeposit = () => {
-    alert("Deposit");
-
-    console.log('tradeData', tradeData);
-
-    const tradeId = tradeData.tradeId;
-    const tokenIds = [tradeData.tokenId];
-    const amounts = [tradeData.quantity];
-    const user = 0; // Enum.buyer == 0
-
-    // const result = writeContract({
-    //     abi,
-    //     address: '0x2da2d32ecdcb7c89b0fc435625b1052cddae2d5e',
-    //     functionName: 'deposit',
-    //     args: [
-    //       tradeId, tokenIds, amounts, user
-    //     ],
-    // })
-
-    console.log(tradeId, tokenIds, amounts, user)
+    const tradeId = Number(0);
+    const tokenIds = [1];
+    const amounts = [1];
+    const user = Number(0); // enum.buyer == 0
+  
+    try {
+      const result = await writeContract({
+        abi,
+        address: '0xca4944605e921f8f92e9b3071f92fc10e2ad3712',
+        // address: '0x98eDDadCfde04dC22a0e62119617e74a6Bc77313',
+        functionName: 'deposit',
+        args: [tradeId, tokenIds, amounts, user],
+      });
+      console.log(result);
+    } finally {
+      setIsSubmitting(false); // 완료 후 다시 버튼 활성화
+    }
   };
 
-  const handleConfirm = () => {
+  const handleBuyerConfirm = async () => {
     alert("Confirm");
 
-    const tradeId = tradeData.tradeId;
+    // const tradeId = Number(tradeData.tradeId);
+    const tradeId = Number(0);
 
-    // const result = writeContract({
-    //     abi,
-    //     address: '0x2da2d32ecdcb7c89b0fc435625b1052cddae2d5e',
-    //     functionName: 'confirmTrade',
-    //     args: [
-    //       tradeId
-    //     ],
-    // })
+    console.log('abi', abi);
+
+    const result = writeContract({
+        abi,
+        address: '0x0766AA63A1BCE9f8bd24c7Ca476AC78cAc570DD8',
+        functionName: 'confirmTrade',
+        args: [
+          tradeId
+        ],
+      value: Number(1)
+    })
 
     console.log(tradeId)
   };
@@ -180,12 +198,34 @@ const BuyerView = ({ sellerAddress, buyerAddress, tradeData }) => {
             </div>
           </div>
 
-          <div id="dps-btn" onClick={() => handleDeposit()}>
+          <div id="dps-btn" onClick={
+  async () => {
+      // alert("Deposit");
+
+      console.log(1123123123123123);
+
+      const tradeId = Number(tradeData.tradeId);
+      const tokenIds = [Number(tradeData.tokenId)];
+      const amounts = [Number(tradeData.quantity)];
+      const user = Number(1); // Enum.buyer == 0
+
+      const result = writeContract({
+          abi,
+          address: '0xca4944605e921f8f92e9b3071f92fc10e2ad3712',
+          functionName: 'deposit',
+          args: [
+            tradeId, tokenIds, amounts, user
+          ],
+      })
+
+      console.log(tradeId, tokenIds, amounts, user)
+    }
+          }>
             Deposit Coin
           </div>
         </div>
 
-        <div id="cfm-btn" onClick={() => handleConfirm()}>
+        <div id="cfm-btn" onClick={() => handleBuyerConfirm()}>
           Confirm Trade
         </div>
       </Wrapper>
